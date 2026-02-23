@@ -196,21 +196,197 @@ html[dir="rtl"] .language-toggle-login {
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .login-box {
-        padding: 30px 20px;
+        padding: 35px 25px;
+        max-width: 90%;
     }
 
     .logo {
-        font-size: 40px;
+        font-size: 44px;
+        margin-bottom: 15px;
     }
 
     .subtitle {
-        font-size: 14px;
+        font-size: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
     }
 
     input[type="text"],
     input[type="password"] {
-        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 11px 14px;
+        font-size: 15px;
+    }
+
+    .login-btn {
+        padding: 11px;
+        font-size: 13px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    .error-message {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .back-link {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .login-container {
+        padding: 15px;
+        min-height: 100vh;
+    }
+
+    .login-box {
+        padding: 25px 18px;
+        max-width: 100%;
+        width: 100%;
+        border-radius: 12px;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .logo {
+        font-size: 36px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .login-form {
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 7px;
+        color: var(--text-color);
+        font-size: 12px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 16px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(26, 95, 63, 0.1);
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 11px;
+        font-weight: 600;
+        font-size: 12px;
+        cursor: pointer;
+        margin-top: 8px;
+        border-radius: 6px;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .login-btn:active {
+        transform: scale(0.98);
+    }
+
+    .error-message {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 12px;
+        font-size: 11px;
+        border-left: 3px solid var(--danger-color);
+    }
+
+    .back-section {
+        text-align: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .back-link {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    .back-link:active {
+        opacity: 0.7;
+    }
+
+    .language-toggle-login {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 6px;
+    }
+
+    html[dir="rtl"] .language-toggle-login {
+        right: auto;
+        left: 12px;
+    }
+
+    .lang-btn {
+        background: none;
+        border: 2px solid var(--border-color);
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 10px;
+        transition: all 0.3s ease;
+        color: var(--text-color);
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .lang-btn:active {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .lang-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
     }
 }

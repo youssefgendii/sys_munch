@@ -631,26 +631,542 @@ body {
     .header {
         flex-direction: column;
         gap: 15px;
+        padding: 15px;
+    }
+
+    .header-left {
+        gap: 10px;
+        width: 100%;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .tagline {
+        font-size: 11px;
     }
 
     .header-right {
         width: 100%;
-        justify-content: space-between;
+        justify-content: space-around;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .time-display {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .language-toggle {
+        display: flex;
+        gap: 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 8px;
+        border-radius: 6px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lang-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        flex: 1;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .menu-section {
+        padding: 15px;
+        order: -1;
+    }
+
+    .menu-header {
+        margin-bottom: 15px;
+    }
+
+    .menu-header h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .category-filter {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .category-btn {
+        padding: 6px 10px;
+        font-size: 12px;
     }
 
     .menu-grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
     }
 
     .menu-item {
         padding: 8px;
+        cursor: pointer;
+        flex-direction: column;
     }
 
     .menu-item-icon {
         font-size: 24px;
+        margin-bottom: 5px;
     }
 
     .menu-item-name {
         font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .menu-item-price {
+        font-size: 12px;
+    }
+
+    .order-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .current-order {
+        flex: 1;
+        padding: 15px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .current-order h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .order-items {
+        margin-bottom: 10px;
+    }
+
+    .order-item {
+        padding: 8px;
+        margin-bottom: 6px;
+        font-size: 12px;
+    }
+
+    .order-item-name {
+        font-size: 12px;
+    }
+
+    .qty-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+
+    .remove-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+
+    .order-summary {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .summary-row {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 8px;
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .daily-orders {
+        flex: 1;
+        padding: 15px;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    .orders-header h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .order-count {
+        font-size: 11px;
+        padding: 3px 10px;
+    }
+
+    .orders-list {
+        margin-bottom: 10px;
+    }
+
+    .order-card {
+        padding: 8px;
+        margin-bottom: 6px;
+        font-size: 11px;
+    }
+
+    .order-card-id {
+        font-size: 11px;
+    }
+
+    .order-card-time {
+        font-size: 10px;
+    }
+
+    .admin-link-section {
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+
+    .admin-link {
+        padding: 10px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 30% auto;
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    .close {
+        font-size: 24px;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    * {
+        font-size: 13px;
+    }
+
+    .container {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .header {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .tagline {
+        font-size: 9px;
+    }
+
+    .header-left {
+        gap: 8px;
+    }
+
+    .header-right {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .language-toggle {
+        padding: 6px;
+        gap: 5px;
+    }
+
+    .lang-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+        flex: 1;
+    }
+
+    .time-display {
+        width: 100%;
+        text-align: center;
+        font-size: 11px;
+    }
+
+    .main-content {
+        padding: 8px;
+        gap: 8px;
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .menu-section {
+        padding: 10px;
+    }
+
+    .menu-header h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .category-filter {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+
+    .category-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .menu-item {
+        padding: 6px;
+    }
+
+    .menu-item-icon {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .menu-item-name {
+        font-size: 10px;
+        margin-bottom: 3px;
+    }
+
+    .menu-item-price {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .menu-item:active {
+        transform: scale(0.95);
+    }
+
+    .order-section {
+        gap: 8px;
+        min-height: auto;
+    }
+
+    .current-order {
+        padding: 12px;
+        max-height: none;
+        order: 2;
+    }
+
+    .current-order h2 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .order-items {
+        margin-bottom: 8px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .order-item {
+        padding: 6px;
+        margin-bottom: 5px;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .order-item-name {
+        font-size: 11px;
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .order-item-qty {
+        font-size: 10px;
+    }
+
+    .order-item-controls {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+    }
+
+    .qty-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+        padding: 2px;
+    }
+
+    .remove-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+        padding: 2px;
+    }
+
+    .order-summary {
+        padding: 8px;
+        margin-bottom: 8px;
+        background-color: var(--light-bg);
+        border-radius: 6px;
+    }
+
+    .summary-row {
+        font-size: 11px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 6px;
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 8px;
+        font-size: 11px;
+        width: 100%;
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+
+    .daily-orders {
+        padding: 12px;
+        max-height: none;
+        order: 1;
+    }
+
+    .orders-header {
+        margin-bottom: 10px;
+    }
+
+    .orders-header h2 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .order-count {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .orders-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 6px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .order-card {
+        padding: 6px;
+        margin-bottom: 0;
+        font-size: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .order-card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .order-card-id {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .order-card-time {
+        font-size: 9px;
+        opacity: 0.8;
+    }
+
+    .order-card-items {
+        font-size: 10px;
+        margin: 2px 0;
+    }
+
+    .order-card-price {
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .order-card-delete {
+        width: 100%;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .admin-link-section {
+        margin-top: 8px;
+        padding-top: 8px;
+    }
+
+    .admin-link {
+        padding: 10px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 50% auto;
+        padding: 12px;
+        max-width: 95%;
+        border-radius: 8px;
+    }
+
+    .close {
+        font-size: 22px;
+    }
+
+    .modal-item {
+        padding: 6px 0;
+        font-size: 11px;
+    }
+
+    input,
+    button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    input {
+        width: 100%;
     }
 }

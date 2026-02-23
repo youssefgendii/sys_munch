@@ -563,26 +563,7 @@ tbody tr:hover {
     .header-right {
         width: 100%;
         justify-content: space-between;
-    }
-}
-
-@media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .inventory-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .inventory-filter {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .items-list {
-        grid-template-columns: 1fr;
+        flex-wrap: wrap;
     }
 
     .admin-nav {
@@ -591,6 +572,592 @@ tbody tr:hover {
 
     .tab-btn {
         flex: 1;
-        min-width: 120px;
+        min-width: 100px;
+    }
+
+    .inventory-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .inventory-filter {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .items-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        overflow-x: hidden;
+    }
+
+    .admin-header {
+        padding: 15px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .header-left {
+        gap: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .admin-title {
+        font-size: 12px;
+    }
+
+    .header-right {
+        width: 100%;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .language-toggle {
+        padding: 6px;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .lang-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+        flex: 1;
+    }
+
+    .time-display {
+        font-size: 12px;
+        text-align: center;
+        flex: 1;
+    }
+
+    .logout-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+        width: auto;
+    }
+
+    .admin-nav {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 12px;
+        background: white;
+        border-bottom: 1px solid var(--border-color);
+        justify-content: space-between;
+    }
+
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .dashboard-content {
+        padding: 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .orders-table {
+        font-size: 12px;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .orders-table thead {
+        display: none;
+    }
+
+    .orders-table tbody tr {
+        display: block;
+        margin-bottom: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .orders-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .orders-table td:last-child {
+        border-bottom: none;
+    }
+
+    .orders-table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        width: 100px;
+        color: var(--primary-color);
+        font-size: 11px;
+    }
+
+    .inventory-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .inventory-filter {
+        width: 100%;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .filter-input {
+        flex: 1;
+        min-width: 150px;
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .filter-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .items-list {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .inventory-item {
+        padding: 12px;
+    }
+
+    .item-info {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .item-name {
+        font-size: 13px;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .item-qty {
+        font-size: 12px;
+    }
+
+    .edit-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        width: 90%;
+        max-width: 400px;
+        padding: 15px;
+    }
+
+    .modal-header {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .modal-body {
+        margin-bottom: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .modal-body input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .btn-secondary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    * {
+        font-size: 13px;
+    }
+
+    .admin-container {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .admin-header {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .header-left {
+        gap: 10px;
+        width: 100%;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .admin-title {
+        font-size: 11px;
+    }
+
+    .header-right {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .language-toggle {
+        padding: 5px;
+        gap: 6px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lang-btn {
+        padding: 5px 8px;
+        font-size: 10px;
+        flex: 1;
+    }
+
+    .time-display {
+        font-size: 11px;
+        padding: 8px;
+        background: rgba(0,0,0,0.1);
+        border-radius: 4px;
+    }
+
+    .logout-btn {
+        padding: 8px 12px;
+        font-size: 10px;
+        width: 100%;
+    }
+
+    .admin-nav {
+        display: flex;
+        gap: 6px;
+        padding: 10px;
+        background: white;
+        flex-direction: column;
+    }
+
+    .tab-btn {
+        padding: 10px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .dashboard-content {
+        padding: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .orders-table {
+        font-size: 11px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .orders-table thead {
+        display: none;
+    }
+
+    .orders-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .orders-table tbody tr {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 0;
+    }
+
+    .orders-table td {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 11px;
+    }
+
+    .orders-table td:last-child {
+        border-bottom: none;
+    }
+
+    .orders-table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--primary-color);
+        font-size: 10px;
+        min-width: 80px;
+        word-break: break-word;
+    }
+
+    .monthly-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .breakdown-item {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+    }
+
+    .breakdown-date {
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .breakdown-amount {
+        font-size: 12px;
+        font-weight: bold;
+        color: var(--secondary-color);
+    }
+
+    .inventory-header {
+        gap: 8px;
+        padding: 0;
+    }
+
+    .inventory-filter {
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .filter-input {
+        flex: 1;
+        min-width: 150px;
+        font-size: 12px;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+    }
+
+    .filter-btn {
+        padding: 8px 10px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .items-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .inventory-item {
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .item-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .item-name {
+        font-size: 12px;
+        font-weight: 600;
+        flex: 1;
+    }
+
+    .item-qty {
+        font-size: 11px;
+        background: var(--light-bg);
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .edit-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+        width: 100%;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-width: 100%;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: var(--primary-color);
+    }
+
+    .close {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+        color: #999;
+    }
+
+    .close:hover {
+        color: #000;
+    }
+
+    .modal-body {
+        margin-bottom: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text-color);
+    }
+
+    .modal-body input {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .btn-primary:active {
+        transform: scale(0.98);
+    }
+
+    .btn-secondary {
+        background: var(--border-color);
+        color: var(--text-color);
+        width: 100%;
+    }
+
+    .btn-secondary:active {
+        transform: scale(0.98);
+    }
+
+    input, button, select {
+        font-size: 16px;
     }
 }
