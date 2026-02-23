@@ -1,0 +1,12 @@
+.DS_Store
+.vscode/
+*.swp
+*.swo
+*~
+node_modules/
+.env
+.env.local
+.idea/
+*.iml
+dist/
+build/
