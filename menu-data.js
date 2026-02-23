@@ -1,0 +1,56 @@
+const menuData = {
+    sandwiches: [
+        { id: 1, name: 'Pulled Beef', price: 180, icon: '🥩', nameAr: 'لحم مسحوب', quantity: 50 },
+        { id: 2, name: 'Beef Burger', price: 175, icon: '🍔', nameAr: 'برجر لحم', quantity: 45 },
+        { id: 3, name: 'Chicken Fajita', price: 140, icon: '🌮', nameAr: 'فاجيتا دجاج', quantity: 40 },
+        { id: 4, name: 'Dynamite Chicken', price: 160, icon: '🌶️', nameAr: 'دجاج ديناميت', quantity: 35 },
+        { id: 5, name: 'Falafel & Eggplants', price: 80, icon: '🟤', nameAr: 'فلافل وباذنجان', quantity: 60 },
+        { id: 6, name: 'Halloumi Cheese', price: 120, icon: '🧀', nameAr: 'جبن حلوم', quantity: 38 },
+    ],
+    sliders: [
+        { id: 7, name: 'Beef Burger Slider', price: 140, icon: '🍔', nameAr: 'شريحة برجر لحم', quantity: 50 },
+        { id: 8, name: 'Fried Chicken Slider', price: 100, icon: '🍗', nameAr: 'شريحة دجاج مقلي', quantity: 42 },
+        { id: 9, name: 'Fried Shrimps Slider', price: 280, icon: '🍤', nameAr: 'شريحة جمبري مقلي', quantity: 28 },
+    ],
+    snacks: [
+        { id: 10, name: 'Burger Coin Slimmies', price: 220, icon: '💰', nameAr: 'قطع البرجر', quantity: 50 },
+        { id: 11, name: 'Mini Hawawshi', price: 150, icon: '🥖', nameAr: 'حواوشي صغير', quantity: 40 },
+        { id: 12, name: 'Tortilla Kebab Skewers', price: 250, icon: '🌯', nameAr: 'شيش طرطور الكباب', quantity: 30 },
+        { id: 13, name: 'Mini Corn Dogs', price: 140, icon: '🌭', nameAr: 'نقانق الذرة الصغيرة', quantity: 35 },
+        { id: 14, name: 'Dynamite Shrimp', price: 275, icon: '🌶️', nameAr: 'جمبري ديناميت', quantity: 25 },
+        { id: 15, name: 'Sweet Corn on the Cob', price: 75, icon: '🌽', nameAr: 'ذرة حلوة', quantity: 45 },
+        { id: 16, name: 'Stuffed Vine Leaves', price: 95, icon: '🍃', nameAr: 'ورق عنب محشي', quantity: 40 },
+        { id: 17, name: 'Loaded Chips Bag', price: 85, icon: '🥔', nameAr: 'كيس شيبسي محمل', quantity: 60 },
+        { id: 18, name: 'Mini Roz Maamor', price: 100, icon: '🍚', nameAr: 'أرز ممور صغير', quantity: 30 },
+        { id: 19, name: 'Mini Roz Maamor - Meat', price: 180, icon: '🍚', nameAr: 'أرز ممور صغير لحم', quantity: 25 },
+        { id: 20, name: 'Mini Roz Maamor - Hamam', price: 275, icon: '🍚', nameAr: 'أرز ممور صغير حمام', quantity: 20 },
+        { id: 27, name: 'Plate Chicken Tenders with Fries', price: 140, icon: '🍟', nameAr: 'صدور دجاج مع بطاطس', quantity: 55 },
+    ],
+    desserts: [
+        { id: 21, name: 'Sweet Potato Crème Brûlée', price: 100, icon: '🍮', nameAr: 'كريمة البطاطا الحلوة', quantity: 32 },
+        { id: 22, name: 'Vanilla Ice Cream', price: 20, icon: '🍦', nameAr: 'آيس كريم فانيليا', quantity: 100 },
+        { id: 23, name: 'Cookie Fries', price: 80, icon: '🍪', nameAr: 'بسكويت مقلي', quantity: 44 },
+        { id: 24, name: 'Cookie Sandwich', price: 180, icon: '🍪', nameAr: 'سندويتش البسكويت', quantity: 25 },
+        { id: 25, name: 'Strawberry Dubai Kunafa', price: 150, icon: '🍓', nameAr: 'كنافة فراولة دبي', quantity: 20 },
+        { id: 26, name: 'Tiramisu Cup', price: 100, icon: '☕', nameAr: 'كوب تيراميسو', quantity: 30 },
+    ]
+};
+
+function getMenuItemName(item) {
+    return currentLanguage === 'ar' ? item.nameAr : item.name;
+}
+
+function getAllMenuItems() {
+    const all = [];
+    for (let category in menuData) {
+        all.push(...menuData[category]);
+    }
+    return all;
+}
+
+function getMenuItemsByCategory(category) {
+    if (category === 'all') {
+        return getAllMenuItems();
+    }
+    return menuData[category] || [];
+}

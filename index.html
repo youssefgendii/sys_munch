@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNCH - Ordering System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 class="logo">🍔 MUNCH</h1>
+                <p class="tagline" data-i18n="tagline">Bringing People Together</p>
+            </div>
+            <div class="header-right">
+                <div class="language-toggle">
+                    <button class="lang-btn active" data-lang="en">English</button>
+                    <button class="lang-btn" data-lang="ar">العربية</button>
+                </div>
+                <div class="time-display" id="timeDisplay"></div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left: Menu Section -->
+            <section class="menu-section">
+                <div class="menu-header">
+                    <h2 data-i18n="menu">Menu</h2>
+                    <div class="category-filter">
+                        <button class="category-btn active" data-category="all" data-i18n="all-categories">All</button>
+                        <button class="category-btn" data-category="sandwiches" data-i18n="sandwiches">Sandwiches</button>
+                        <button class="category-btn" data-category="sliders" data-i18n="sliders">Sliders</button>
+                        <button class="category-btn" data-category="snacks" data-i18n="snacks">Snacks</button>
+                        <button class="category-btn" data-category="desserts" data-i18n="desserts">Desserts</button>
+                    </div>
+                </div>
+
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Right: Order Section -->
+            <section class="order-section">
+                <!-- Current Order -->
+                <div class="current-order">
+                    <h2 data-i18n="current-order">Current Order</h2>
+                    <div class="order-items" id="orderItems">
+                        <p class="empty-message" data-i18n="no-items">No items added yet</p>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span data-i18n="subtotal">Subtotal:</span>
+                            <span id="subtotal">0 LE</span>
+                        </div>
+                        <div class="summary-row">
+                            <span data-i18n="tax">Tax (10%):</span>
+                            <span id="tax">0 LE</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span data-i18n="total">Total:</span>
+                            <span id="total">0 LE</span>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="btn btn-clear" id="clearBtn" data-i18n="clear-order">Clear Order</button>
+                        <button class="btn btn-complete" id="completeBtn" data-i18n="confirm-order">Confirm Order</button>
+                    </div>
+                </div>
+
+                <!-- Daily Orders Summary -->
+                <div class="daily-orders">
+                    <div class="orders-header">
+                        <h2 data-i18n="today-orders">Today's Orders</h2>
+                        <span class="order-count" id="orderCount">0</span>
+                    </div>
+                    <div class="orders-list" id="ordersList">
+                        <p class="empty-message" data-i18n="no-orders">No orders yet</p>
+                    </div>
+                    <div class="admin-link-section">
+                        <a href="login.html" class="admin-link" data-i18n="admin-panel">📊 Admin Panel</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal for order details -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-i18n="order-details">Order Details</h2>
+            <div id="modalOrderDetails"></div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="menu-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

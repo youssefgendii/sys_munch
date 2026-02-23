@@ -1,0 +1,142 @@
+const translations = {
+    en: {
+        'tagline': 'Bringing People Together',
+        'menu': 'Menu',
+        'all-categories': 'All',
+        'sandwiches': 'Sandwiches',
+        'sliders': 'Sliders',
+        'snacks': 'Snacks',
+        'desserts': 'Desserts',
+        'current-order': 'Current Order',
+        'no-items': 'No items added yet',
+        'subtotal': 'Subtotal:',
+        'tax': 'Tax (10%):',
+        'total': 'Total:',
+        'clear-order': 'Clear Order',
+        'confirm-order': 'Confirm Order',
+        'today-orders': "Today's Orders",
+        'no-orders': 'No orders yet',
+        'daily-revenue': 'Daily Revenue:',
+        'order-details': 'Order Details',
+        'order': 'Order',
+        'quantity': 'Qty',
+        'price': 'Price',
+        'remove': 'Remove',
+        'time': 'Time',
+        'items': 'items',
+        'admin-panel': '📊 Admin Panel',
+        'out-of-stock': 'Out of Stock',
+        'insufficient-quantity': 'Insufficient quantity available for',
+        'admin-dashboard': 'Admin Dashboard',
+        'back-cashier': '← Back to Cashier',
+        'today-summary': '📅 Today',
+        'monthly-summary': '📊 Monthly',
+        'inventory-mgmt': '📦 Inventory',
+        'total-orders': 'Total Orders',
+        'total-revenue': 'Total Revenue',
+        'avg-order-value': 'Avg Order Value',
+        'items-sold': 'Items Sold',
+        'orders-list': 'Orders List',
+        'items-ordered': 'Items',
+        'top-items': 'Top Selling Items',
+        'monthly-breakdown': 'Monthly Breakdown by Date',
+        'item-name': 'Item Name',
+        'current-quantity': 'Current Qty',
+        'actions': 'Actions',
+        'status': 'Status',
+        'edit': 'Edit',
+        'edit-quantity': 'Edit Quantity',
+        'item': 'Item',
+        'new-quantity': 'New Quantity',
+        'save': 'Save',
+        'cancel': 'Cancel',
+        'all': 'All',
+        'reset-all': '🔄 Reset All',
+        'logout': '🚪 Logout',
+        'admin-login': 'Admin Login',
+        'username': 'Username',
+        'password': 'Password',
+        'login-button': 'Login',
+    },
+    ar: {
+        'tagline': 'جلب الناس معا',
+        'menu': 'القائمة',
+        'all-categories': 'الكل',
+        'sandwiches': 'السندويتشات',
+        'sliders': 'الشرائح',
+        'snacks': 'الوجبات الخفيفة',
+        'desserts': 'الحلويات',
+        'current-order': 'الطلب الحالي',
+        'no-items': 'لم تتم إضافة عناصر بعد',
+        'subtotal': 'المجموع الفرعي:',
+        'tax': 'الضريبة (10٪):',
+        'total': 'الإجمالي:',
+        'clear-order': 'مسح الطلب',
+        'confirm-order': 'تأكيد الطلب',
+        'today-orders': 'طلبات اليوم',
+        'no-orders': 'لا توجد طلبات حتى الآن',
+        'daily-revenue': 'إيرادات اليوم:',
+        'order-details': 'تفاصيل الطلب',
+        'order': 'الطلب',
+        'quantity': 'الكمية',
+        'price': 'السعر',
+        'remove': 'إزالة',
+        'time': 'الوقت',
+        'items': 'عناصر',
+        'admin-panel': '📊 لوحة المسؤول',
+        'out-of-stock': 'غير متوفر',
+        'insufficient-quantity': 'الكمية المتاحة غير كافية لـ',
+        'admin-dashboard': 'لوحة تحكم المسؤول',
+        'back-cashier': '← العودة إلى الصراف',
+        'today-summary': '📅 اليوم',
+        'monthly-summary': '📊 شهري',
+        'inventory-mgmt': '📦 إدارة المخزون',
+        'total-orders': 'إجمالي الطلبات',
+        'total-revenue': 'إجمالي الإيرادات',
+        'avg-order-value': 'متوسط قيمة الطلب',
+        'items-sold': 'العناصر المباعة',
+        'orders-list': 'قائمة الطلبات',
+        'items-ordered': 'العناصر',
+        'top-items': 'أفضل العناصر مبيعاً',
+        'monthly-breakdown': 'التفصيل الشهري حسب التاريخ',
+        'item-name': 'اسم العنصر',
+        'current-quantity': 'الكمية الحالية',
+        'actions': 'الإجراءات',
+        'status': 'الحالة',
+        'edit': 'تعديل',
+        'edit-quantity': 'تعديل الكمية',
+        'item': 'العنصر',
+        'new-quantity': 'الكمية الجديدة',
+        'save': 'حفظ',
+        'cancel': 'إلغاء',
+        'all': 'الكل',
+        'reset-all': '🔄 إعادة تعيين',
+        'logout': '🚪 تسجيل الخروج',
+        'admin-login': 'دخول المسؤول',
+        'username': 'اسم المستخدم',
+        'password': 'كلمة المرور',
+        'login-button': 'دخول',
+    }
+};
+
+let currentLanguage = 'en';
+
+function setLanguage(lang) {
+    currentLanguage = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+    updatePageTranslations();
+}
+
+function updatePageTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[currentLanguage][key]) {
+            element.textContent = translations[currentLanguage][key];
+        }
+    });
+}
+
+function t(key) {
+    return translations[currentLanguage][key] || key;
+}
