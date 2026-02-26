@@ -98,14 +98,27 @@ function loadTodayOrders() {
     try {
         const parsed = JSON.parse(raw);
         return parsed
-            .map((order) => ({
-                ...order,
-                timestamp: new Date(order.timestamp)
-            }))
+            .map((order, index) => normalizeOrder(order, index))
             .sort((a, b) => b.timestamp - a.timestamp);
     } catch (e) {
         return [];
     }
+}
+
+function normalizeOrder(order, index) {
+    const timestamp = new Date(order.timestamp || Date.now());
+    const rawId = Number(order.id);
+    const hasValidId = Number.isFinite(rawId) && rawId > 0;
+    const uid = hasValidId ? `id_${rawId}` : `ts_${timestamp.getTime()}_${index}`;
+
+    return {
+        ...order,
+        timestamp,
+        uid,
+        displayId: hasValidId ? String(rawId) : "",
+        total: Number(order.total || 0),
+        items: Array.isArray(order.items) ? order.items : []
+    };
 }
 
 function loadStatusMap() {
@@ -122,14 +135,14 @@ function saveStatusMap(statusMap) {
     localStorage.setItem(getStatusKey(), JSON.stringify(statusMap));
 }
 
-function setOrderStatus(orderId, status) {
+function setOrderStatus(orderKey, status) {
     const statusMap = loadStatusMap();
-    statusMap[String(orderId)] = status;
+    statusMap[String(orderKey)] = status;
     saveStatusMap(statusMap);
 }
 
 function cleanupStatusMap(orders, statusMap) {
-    const existingIds = new Set(orders.map((order) => String(order.id)));
+    const existingIds = new Set(orders.map((order) => String(order.uid)));
     let changed = false;
     Object.keys(statusMap).forEach((id) => {
         if (!existingIds.has(id)) {
@@ -160,7 +173,7 @@ function renderOrders() {
     const doneOrders = [];
 
     orders.forEach((order) => {
-        const state = statusMap[String(order.id)] || "inprogress";
+        const state = statusMap[String(order.uid)] || "inprogress";
         if (state === "done") {
             doneOrders.push(order);
         } else {
@@ -188,13 +201,16 @@ function renderOrders() {
         return `
             <article class="order-card">
                 <div class="order-top">
-                    <div class="order-id">${tr("order")} #${order.id}</div>
+                    <div class="order-id">${tr("order")}${order.displayId ? ` #${order.displayId}` : ""}</div>
                     <div class="order-time">${formatTime(order.timestamp)}</div>
                 </div>
                 <div class="item-list">${items}</div>
-                <div class="order-total">${tr("total")}: ${Number(order.total).toFixed(2)} LE</div>
+                <div class="order-total">
+                    <span>${tr("total")}:</span>
+                    <span>${order.total.toFixed(2)} LE</span>
+                </div>
                 <div class="order-actions">
-                    <button class="state-btn mark-done" data-order-id="${order.id}" data-next-state="done">${tr("markDone")}</button>
+                    <button class="state-btn mark-done" data-order-key="${order.uid}" data-next-state="done">${tr("markDone")}</button>
                 </div>
             </article>
         `;
@@ -213,13 +229,16 @@ function renderOrders() {
         return `
             <article class="order-card done-card">
                 <div class="order-top">
-                    <div class="order-id">${tr("order")} #${order.id}</div>
+                    <div class="order-id">${tr("order")}${order.displayId ? ` #${order.displayId}` : ""}</div>
                     <div class="order-time">${formatTime(order.timestamp)}</div>
                 </div>
                 <div class="item-list">${items}</div>
-                <div class="order-total">${tr("total")}: ${Number(order.total).toFixed(2)} LE</div>
+                <div class="order-total">
+                    <span>${tr("total")}:</span>
+                    <span>${order.total.toFixed(2)} LE</span>
+                </div>
                 <div class="order-actions">
-                    <button class="state-btn mark-progress" data-order-id="${order.id}" data-next-state="inprogress">${tr("markProgress")}</button>
+                    <button class="state-btn mark-progress" data-order-key="${order.uid}" data-next-state="inprogress">${tr("markProgress")}</button>
                 </div>
             </article>
         `;
@@ -229,19 +248,19 @@ function renderOrders() {
 refreshBtn.addEventListener("click", renderOrders);
 window.addEventListener("storage", renderOrders);
 inProgressContainer.addEventListener("click", (event) => {
-    const btn = event.target.closest("button[data-order-id]");
+    const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
-    const orderId = btn.getAttribute("data-order-id");
+    const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
-    setOrderStatus(orderId, nextState);
+    setOrderStatus(orderKey, nextState);
     renderOrders();
 });
 doneContainer.addEventListener("click", (event) => {
-    const btn = event.target.closest("button[data-order-id]");
+    const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
-    const orderId = btn.getAttribute("data-order-id");
+    const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
-    setOrderStatus(orderId, nextState);
+    setOrderStatus(orderKey, nextState);
     renderOrders();
 });
 

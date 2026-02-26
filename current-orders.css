@@ -17,6 +17,8 @@ body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: var(--bg);
     color: var(--text);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .chef-app {
@@ -271,7 +273,7 @@ body {
 
 @media (max-width: 768px) {
     .chef-app {
-        padding: 10px;
+        padding: 12px;
     }
 
     .chef-header {
@@ -281,11 +283,11 @@ body {
     }
 
     .chef-header h1 {
-        font-size: 42px;
+        font-size: 38px;
     }
 
     .subtitle {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .header-actions {
@@ -296,8 +298,8 @@ body {
     .back-btn {
         flex: 1;
         text-align: center;
-        font-size: 22px;
-        padding: 14px 10px;
+        font-size: 18px;
+        padding: 12px 10px;
     }
 
     .summary-item {
@@ -309,11 +311,11 @@ body {
     }
 
     .summary-item .label {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .summary-item .value {
-        font-size: 34px;
+        font-size: 24px;
     }
 
     .orders-layout {
@@ -321,12 +323,12 @@ body {
     }
 
     .column-header h2 {
-        font-size: 36px;
+        font-size: 30px;
     }
 
     .count-badge {
-        font-size: 24px;
-        min-width: 54px;
+        font-size: 20px;
+        min-width: 44px;
     }
 
     .order-card {
@@ -334,15 +336,15 @@ body {
     }
 
     .order-id {
-        font-size: 34px;
+        font-size: 28px;
     }
 
     .order-time {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .item-row {
-        font-size: 30px;
+        font-size: 24px;
         line-height: 1.25;
     }
 
@@ -351,23 +353,27 @@ body {
     }
 
     .order-total {
-        font-size: 34px;
+        font-size: 24px;
     }
 
     .state-btn {
         width: 100%;
-        font-size: 30px;
-        padding: 14px 16px;
+        font-size: 22px;
+        padding: 12px 16px;
     }
 }
 
 @media (max-width: 480px) {
+    .chef-app {
+        padding: calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom));
+    }
+
     .chef-header h1 {
-        font-size: 48px;
+        font-size: 30px;
     }
 
     .subtitle {
-        font-size: 22px;
+        font-size: 14px;
     }
 
     .summary-bar {
@@ -375,15 +381,15 @@ body {
     }
 
     .summary-item .label {
-        font-size: 22px;
+        font-size: 14px;
     }
 
     .summary-item .value {
-        font-size: 38px;
+        font-size: 20px;
     }
 
     .column-header h2 {
-        font-size: 40px;
+        font-size: 26px;
     }
 
     .order-top {
@@ -393,26 +399,36 @@ body {
     }
 
     .order-id {
-        font-size: 40px;
+        font-size: 22px;
     }
 
     .order-time {
-        font-size: 28px;
+        font-size: 16px;
     }
 
     .item-row {
-        font-size: 34px;
+        font-size: 18px;
     }
 
     .order-total {
-        font-size: 38px;
+        font-size: 18px;
+        gap: 8px;
     }
 
     .state-btn {
-        font-size: 34px;
+        font-size: 20px;
     }
 
     .empty-state {
-        font-size: 34px;
+        font-size: 22px;
+        padding: 18px;
     }
+}
+
+.order-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: nowrap;
 }
