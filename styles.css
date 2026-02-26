@@ -470,6 +470,24 @@ body {
     box-shadow: 0 4px 12px rgba(26, 95, 63, 0.3);
 }
 
+.chef-link {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.chef-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+}
+
 .orders-list {
     flex: 1;
     overflow-y: auto;
@@ -740,49 +758,71 @@ body {
     .current-order {
         flex: 1;
         padding: 15px;
-        max-height: 300px;
-        overflow-y: auto;
+        max-height: none;
+        overflow: visible;
     }
 
     .current-order h2 {
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 22px;
+        margin-bottom: 14px;
     }
 
     .order-items {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
+        max-height: none;
+        padding: 12px;
     }
 
     .order-item {
-        padding: 8px;
-        margin-bottom: 6px;
-        font-size: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 12px;
+        align-items: start;
     }
 
     .order-item-name {
-        font-size: 12px;
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .order-item-qty {
+        font-size: 14px;
+    }
+
+    .order-item-price {
+        margin-right: 0;
+        font-size: 16px;
+        text-align: right;
+    }
+
+    .order-item-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+        gap: 8px;
     }
 
     .qty-btn {
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
     }
 
     .remove-btn {
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
     }
 
     .order-summary {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 12px;
+        margin-bottom: 12px;
     }
 
     .summary-row {
-        font-size: 12px;
-        margin-bottom: 6px;
+        font-size: 16px;
+        margin-bottom: 10px;
     }
 
     .order-actions {
@@ -969,75 +1009,86 @@ body {
     }
 
     .current-order {
-        padding: 12px;
+        padding: 14px;
         max-height: none;
         order: 2;
     }
 
     .current-order h2 {
-        font-size: 14px;
-        margin-bottom: 10px;
+        font-size: 28px;
+        margin-bottom: 14px;
     }
 
     .order-items {
-        margin-bottom: 8px;
-        max-height: 150px;
-        overflow-y: auto;
+        margin-bottom: 12px;
+        max-height: none;
+        overflow: visible;
+        padding: 12px;
     }
 
     .order-item {
-        padding: 6px;
-        margin-bottom: 5px;
-        font-size: 11px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 4px;
+        padding: 12px;
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 10px;
+        align-items: start;
     }
 
     .order-item-name {
-        font-size: 11px;
+        font-size: 18px;
         flex: 1;
-        min-width: 100px;
+        min-width: 0;
+        line-height: 1.3;
     }
 
     .order-item-qty {
-        font-size: 10px;
+        font-size: 15px;
+        margin-top: 3px;
     }
 
-    .order-item-controls {
-        display: flex;
-        gap: 3px;
-        align-items: center;
+    .order-item-price {
+        margin-right: 0;
+        font-size: 17px;
+        text-align: right;
+    }
+
+    .order-item-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+        gap: 8px;
     }
 
     .qty-btn {
-        width: 22px;
-        height: 22px;
-        font-size: 11px;
-        padding: 2px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        padding: 0;
     }
 
     .remove-btn {
-        width: 22px;
-        height: 22px;
-        font-size: 11px;
-        padding: 2px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        padding: 0;
     }
 
     .order-summary {
-        padding: 8px;
-        margin-bottom: 8px;
+        padding: 14px;
+        margin-bottom: 10px;
         background-color: var(--light-bg);
         border-radius: 6px;
     }
 
     .summary-row {
-        font-size: 11px;
-        margin-bottom: 5px;
+        font-size: 18px;
+        margin-bottom: 10px;
         display: flex;
         justify-content: space-between;
+    }
+
+    .summary-row.total {
+        font-size: 22px;
     }
 
     .order-actions {

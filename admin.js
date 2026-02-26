@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadInventoryFromStorage();
     setupEventListeners();
     updateTabs();
-    setLanguage('en');
+    const savedLang = typeof getSavedLanguage === 'function' ? getSavedLanguage() : 'en';
+    setLanguage(savedLang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang);
+    });
 });
 
 function setupEventListeners() {

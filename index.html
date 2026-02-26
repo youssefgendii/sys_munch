@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,13 +11,13 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <h1 class="logo">🍔 MUNCH</h1>
+                <h1 class="logo">MUNCH</h1>
                 <p class="tagline" data-i18n="tagline">Bringing People Together</p>
             </div>
             <div class="header-right">
                 <div class="language-toggle">
                     <button class="lang-btn active" data-lang="en">English</button>
-                    <button class="lang-btn" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="ar">AR</button>
                 </div>
                 <div class="time-display" id="timeDisplay"></div>
             </div>
@@ -56,10 +56,6 @@
                             <span data-i18n="subtotal">Subtotal:</span>
                             <span id="subtotal">0 LE</span>
                         </div>
-                        <div class="summary-row">
-                            <span data-i18n="tax">Tax (10%):</span>
-                            <span id="tax">0 LE</span>
-                        </div>
                         <div class="summary-row total">
                             <span data-i18n="total">Total:</span>
                             <span id="total">0 LE</span>
@@ -82,7 +78,8 @@
                         <p class="empty-message" data-i18n="no-orders">No orders yet</p>
                     </div>
                     <div class="admin-link-section">
-                        <a href="login.html" class="admin-link" data-i18n="admin-panel">📊 Admin Panel</a>
+                        <a href="login.html" class="admin-link" data-i18n="admin-panel">Admin Panel</a>
+                        <a href="current-orders.html" class="chef-link" data-i18n="current-orders-link">🍽️ Current Orders</a>
                     </div>
                 </div>
             </section>
@@ -103,3 +100,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

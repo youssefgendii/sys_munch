@@ -8,7 +8,6 @@ const menuGrid = document.getElementById('menuGrid');
 const orderItems = document.getElementById('orderItems');
 const ordersList = document.getElementById('ordersList');
 const subtotalEl = document.getElementById('subtotal');
-const taxEl = document.getElementById('tax');
 const totalEl = document.getElementById('total');
 const dailyRevenueEl = document.getElementById('dailyRevenue');
 const dailySummaryEl = document.getElementById('dailySummary');
@@ -24,6 +23,9 @@ const modalOrderDetails = document.getElementById('modalOrderDetails');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = typeof getSavedLanguage === 'function' ? getSavedLanguage() : 'en';
+    setLanguage(savedLang);
+    langBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang));
     loadInventoryFromStorage();
     initializeMenu();
     setupEventListeners();
@@ -166,11 +168,9 @@ function updateCartDisplay() {
 
 function updateTotals() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = Math.round(subtotal * 0.1 * 100) / 100;
-    const total = subtotal + tax;
+    const total = subtotal;
 
-    subtotalEl.textContent = `${subtotal} LE`;
-    taxEl.textContent = `${tax.toFixed(2)} LE`;
+    subtotalEl.textContent = `${subtotal.toFixed(2)} LE`;
     totalEl.textContent = `${total.toFixed(2)} LE`;
 }
 
@@ -228,14 +228,12 @@ function confirmOrder() {
     });
 
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = Math.round(subtotal * 0.1 * 100) / 100;
-    const total = subtotal + tax;
+    const total = subtotal;
 
     const order = {
         id: orderIdCounter++,
         items: JSON.parse(JSON.stringify(cart)),
         subtotal: subtotal,
-        tax: tax,
         total: total,
         timestamp: new Date(),
         timeString: new Date().toLocaleTimeString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')
@@ -256,7 +254,7 @@ function confirmOrder() {
 function updateOrdersList() {
     if (orders.length === 0) {
         ordersList.innerHTML = `<p class="empty-message" data-i18n="no-orders">${t('no-orders')}</p>`;
-        dailySummaryEl.style.display = 'none';
+        if (dailySummaryEl) dailySummaryEl.style.display = 'none';
     } else {
         ordersList.innerHTML = '';
         orders.forEach((order, index) => {
@@ -298,7 +296,7 @@ function updateOrdersList() {
             ordersList.appendChild(cardEl);
         });
         
-        dailySummaryEl.style.display = 'block';
+        if (dailySummaryEl) dailySummaryEl.style.display = 'block';
         updateDailyRevenue();
     }
     
@@ -350,7 +348,7 @@ function showOrderDetails(order) {
 
 function updateDailyRevenue() {
     const revenue = orders.reduce((sum, order) => sum + order.total, 0);
-    dailyRevenueEl.textContent = `${revenue.toFixed(2)} LE`;
+    if (dailyRevenueEl) dailyRevenueEl.textContent = `${revenue.toFixed(2)} LE`;
 }
 
 function updateTime() {

@@ -11,7 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupEventListeners();
-    setLanguage('en');
+    const savedLang = typeof getSavedLanguage === 'function' ? getSavedLanguage() : 'en';
+    setLanguage(savedLang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang);
+    });
 });
 
 function setupEventListeners() {

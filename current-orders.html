@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUNCH - Current Orders</title>
+    <link rel="stylesheet" href="current-orders.css">
+</head>
+<body>
+    <div class="chef-app">
+        <header class="chef-header">
+            <div>
+                <h1 id="pageTitle">Current Orders</h1>
+                <p id="pageSubtitle" class="subtitle">Chef View - Auto refresh every 2 seconds</p>
+            </div>
+            <div class="header-actions">
+                <button id="refreshBtn" class="refresh-btn">Refresh</button>
+                <a id="backToCashierBtn" href="index.html" class="back-btn">Back to Cashier</a>
+            </div>
+        </header>
+
+        <section class="summary-bar">
+            <div class="summary-item">
+                <span id="ordersLabel" class="label">Orders</span>
+                <span class="value" id="orderCount">0</span>
+            </div>
+            <div class="summary-item">
+                <span id="inProgressLabel" class="label">In Progress</span>
+                <span class="value" id="inProgressCount">0</span>
+            </div>
+            <div class="summary-item">
+                <span id="doneLabel" class="label">Done</span>
+                <span class="value" id="doneCount">0</span>
+            </div>
+            <div class="summary-item">
+                <span id="lastUpdateLabel" class="label">Last update</span>
+                <span class="value" id="lastUpdate">--:--:--</span>
+            </div>
+        </section>
+
+        <main class="orders-layout">
+            <section class="orders-column">
+                <div class="column-header in-progress-header">
+                    <h2 id="inProgressHeader">In Progress</h2>
+                    <span id="inProgressBadge" class="count-badge">0</span>
+                </div>
+                <div id="inProgressContainer" class="orders-container">
+                    <div class="empty-state">No in-progress orders</div>
+                </div>
+            </section>
+
+            <section class="orders-column">
+                <div class="column-header done-header">
+                    <h2 id="doneHeader">Done</h2>
+                    <span id="doneBadge" class="count-badge">0</span>
+                </div>
+                <div id="doneContainer" class="orders-container">
+                    <div class="empty-state">No done orders</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="current-orders.js"></script>
+</body>
+</html>
