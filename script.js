@@ -19,7 +19,7 @@ const timeDisplay = document.getElementById('timeDisplay');
 const modal = document.getElementById('orderModal');
 const closeModal = document.querySelector('.close');
 const modalOrderDetails = document.getElementById('modalOrderDetails');
-const menuSectionOrder = ['sandwiches', 'sliders', 'snacks', 'extras', 'desserts'];
+const menuSectionOrder = ['snackSipCup', 'miniRozMaamar', 'curlyFries', 'dessertSection', 'munchPocketSandwiches', 'briocheSliders', 'snackClassics', 'extras'];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
