@@ -17,6 +17,7 @@ const lastUpdateLabel = document.getElementById("lastUpdateLabel");
 const inProgressHeader = document.getElementById("inProgressHeader");
 const doneHeader = document.getElementById("doneHeader");
 const LANGUAGE_STORAGE_KEY = "munch_language";
+const SHARED_ORDERS_API = "/.netlify/functions/orders";
 
 const pageI18n = {
     en: {
@@ -91,18 +92,44 @@ function getStatusKey() {
     return "munch_order_status_" + new Date().toDateString();
 }
 
-function loadTodayOrders() {
-    const raw = localStorage.getItem(getTodayKey());
-    if (!raw) return [];
+async function loadSharedDayData() {
+    const dayKey = new Date().toDateString();
+    try {
+        const response = await fetch(`${SHARED_ORDERS_API}?dayKey=${encodeURIComponent(dayKey)}`, {
+            cache: "no-store"
+        });
+        if (response.ok) {
+            const payload = await response.json();
+            const parsedOrders = Array.isArray(payload.orders) ? payload.orders : [];
+            const parsedStatus = payload.statusMap && typeof payload.statusMap === "object" ? payload.statusMap : {};
+
+            localStorage.setItem(getTodayKey(), JSON.stringify(parsedOrders));
+            localStorage.setItem(getStatusKey(), JSON.stringify(parsedStatus));
+
+            return { orders: parsedOrders, statusMap: parsedStatus };
+        }
+    } catch (e) {
+        // fall back to local storage
+    }
+
+    const rawOrders = localStorage.getItem(getTodayKey());
+    const rawStatus = localStorage.getItem(getStatusKey());
+    let parsedOrders = [];
+    let parsedStatus = {};
 
     try {
-        const parsed = JSON.parse(raw);
-        return parsed
-            .map((order, index) => normalizeOrder(order, index))
-            .sort((a, b) => b.timestamp - a.timestamp);
+        parsedOrders = rawOrders ? JSON.parse(rawOrders) : [];
     } catch (e) {
-        return [];
+        parsedOrders = [];
     }
+
+    try {
+        parsedStatus = rawStatus ? JSON.parse(rawStatus) : {};
+    } catch (e) {
+        parsedStatus = {};
+    }
+
+    return { orders: parsedOrders, statusMap: parsedStatus };
 }
 
 function normalizeOrder(order, index) {
@@ -135,10 +162,26 @@ function saveStatusMap(statusMap) {
     localStorage.setItem(getStatusKey(), JSON.stringify(statusMap));
 }
 
-function setOrderStatus(orderKey, status) {
+async function setOrderStatus(orderKey, status) {
     const statusMap = loadStatusMap();
     statusMap[String(orderKey)] = status;
     saveStatusMap(statusMap);
+
+    try {
+        const dayKey = new Date().toDateString();
+        await fetch(SHARED_ORDERS_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "setStatus",
+                dayKey,
+                orderKey,
+                status
+            })
+        });
+    } catch (e) {
+        // Keep local status if remote update fails.
+    }
 }
 
 function cleanupStatusMap(orders, statusMap) {
@@ -163,10 +206,13 @@ function formatTime(date) {
     });
 }
 
-function renderOrders() {
+async function renderOrders() {
     applyPageLanguage();
-    const orders = loadTodayOrders();
-    const statusMap = loadStatusMap();
+    const dayData = await loadSharedDayData();
+    const orders = (dayData.orders || [])
+        .map((order, index) => normalizeOrder(order, index))
+        .sort((a, b) => b.timestamp - a.timestamp);
+    const statusMap = dayData.statusMap || {};
     cleanupStatusMap(orders, statusMap);
 
     const inProgressOrders = [];
@@ -247,21 +293,21 @@ function renderOrders() {
 
 refreshBtn.addEventListener("click", renderOrders);
 window.addEventListener("storage", renderOrders);
-inProgressContainer.addEventListener("click", (event) => {
+inProgressContainer.addEventListener("click", async (event) => {
     const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
     const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
-    setOrderStatus(orderKey, nextState);
-    renderOrders();
+    await setOrderStatus(orderKey, nextState);
+    await renderOrders();
 });
-doneContainer.addEventListener("click", (event) => {
+doneContainer.addEventListener("click", async (event) => {
     const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
     const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
-    setOrderStatus(orderKey, nextState);
-    renderOrders();
+    await setOrderStatus(orderKey, nextState);
+    await renderOrders();
 });
 
 renderOrders();

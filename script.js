@@ -2,6 +2,7 @@
 let cart = [];
 let orders = [];
 let orderIdCounter = 1;
+const SHARED_ORDERS_API = '/.netlify/functions/orders';
 
 // DOM Elements
 const menuGrid = document.getElementById('menuGrid');
@@ -22,7 +23,7 @@ const modalOrderDetails = document.getElementById('modalOrderDetails');
 const menuSectionOrder = ['snackSipCup', 'miniRozMaamar', 'curlyFries', 'dessertSection', 'munchPocketSandwiches', 'briocheSliders', 'snackClassics', 'extras'];
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const savedLang = typeof getSavedLanguage === 'function' ? getSavedLanguage() : 'en';
     setLanguage(savedLang);
     langBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang));
@@ -31,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateTime();
     setInterval(updateTime, 1000);
-    loadOrdersFromStorage();
+    await loadOrdersFromStorage();
+    updateOrdersList();
+    setInterval(refreshOrdersFromShared, 3000);
 });
 
 function setupEventListeners() {
@@ -193,7 +196,7 @@ function clearOrder() {
     }
 }
 
-function confirmOrder() {
+async function confirmOrder() {
     if (cart.length === 0) {
         alert(currentLanguage === 'ar' ? 'Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø¹Ù†Ø§ØµØ± Ø¥Ù„Ù‰ Ø§Ù„Ø·Ù„Ø¨' : 'Please add items to the order');
         return;
@@ -242,7 +245,7 @@ function confirmOrder() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const total = subtotal;
 
-    const order = {
+    let order = {
         id: orderIdCounter++,
         items: JSON.parse(JSON.stringify(cart)),
         subtotal: subtotal,
@@ -250,6 +253,15 @@ function confirmOrder() {
         timestamp: new Date(),
         timeString: new Date().toLocaleTimeString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')
     };
+
+    const remoteOrder = await createOrderInSharedStore(order);
+    if (remoteOrder) {
+        order = {
+            ...remoteOrder,
+            timestamp: new Date(remoteOrder.timestamp)
+        };
+        orderIdCounter = Math.max(orderIdCounter, (Number(order.id) || 0) + 1);
+    }
 
     orders.unshift(order);
     saveOrdersToStorage();
@@ -315,13 +327,14 @@ function updateOrdersList() {
     orderCountEl.textContent = orders.length;
 }
 
-function deleteOrder(index) {
+async function deleteOrder(index) {
     const order = orders[index];
     const confirmText = currentLanguage === 'ar' 
         ? `Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨ #${order.id}ØŸ` 
         : `Are you sure you want to delete Order #${order.id}?`;
     
     if (confirm(confirmText)) {
+        await deleteOrderFromSharedStore(order.id);
         orders.splice(index, 1);
         saveOrdersToStorage();
         updateOrdersList();
@@ -455,20 +468,99 @@ function saveOrdersToStorage() {
     }))));
 }
 
-function loadOrdersFromStorage() {
+async function loadOrdersFromStorage() {
     const today = new Date().toDateString();
+    const remoteData = await getSharedOrdersForDay(today);
+    if (remoteData) {
+        orders = (remoteData.orders || []).map(o => ({
+            ...o,
+            timestamp: new Date(o.timestamp)
+        }));
+        orderIdCounter = (Number(remoteData.lastOrderId) || 0) + 1;
+        saveOrdersToStorage();
+        return;
+    }
+
     const stored = localStorage.getItem('munch_orders_' + today);
-    if (stored) {
-        try {
-            orders = JSON.parse(stored).map(o => ({
-                ...o,
-                timestamp: new Date(o.timestamp)
-            }));
-            orderIdCounter = (Math.max(...orders.map(o => o.id)) || 0) + 1;
-            updateOrdersList();
-        } catch (e) {
-            console.error('Error loading orders:', e);
-        }
+    if (!stored) return;
+
+    try {
+        orders = JSON.parse(stored).map(o => ({
+            ...o,
+            timestamp: new Date(o.timestamp)
+        }));
+        orderIdCounter = (Math.max(...orders.map(o => o.id)) || 0) + 1;
+    } catch (e) {
+        console.error('Error loading orders:', e);
+    }
+}
+
+async function getSharedOrdersForDay(dayKey) {
+    try {
+        const response = await fetch(`${SHARED_ORDERS_API}?dayKey=${encodeURIComponent(dayKey)}`, {
+            cache: 'no-store'
+        });
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        return null;
+    }
+}
+
+async function createOrderInSharedStore(order) {
+    try {
+        const dayKey = new Date().toDateString();
+        const response = await fetch(SHARED_ORDERS_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'createOrder',
+                dayKey,
+                order
+            })
+        });
+        if (!response.ok) return null;
+        const result = await response.json();
+        return result.order || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function deleteOrderFromSharedStore(orderId) {
+    try {
+        const dayKey = new Date().toDateString();
+        await fetch(SHARED_ORDERS_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'deleteOrder',
+                dayKey,
+                orderId
+            })
+        });
+    } catch (e) {
+        // Keep local delete even if remote fails.
+    }
+}
+
+async function refreshOrdersFromShared() {
+    const today = new Date().toDateString();
+    const remoteData = await getSharedOrdersForDay(today);
+    if (!remoteData || !Array.isArray(remoteData.orders)) return;
+
+    const remoteOrders = remoteData.orders.map(o => ({
+        ...o,
+        timestamp: new Date(o.timestamp)
+    }));
+    const localSignature = JSON.stringify(orders.map(o => ({ id: o.id, timestamp: o.timestamp })));
+    const remoteSignature = JSON.stringify(remoteOrders.map(o => ({ id: o.id, timestamp: o.timestamp })));
+
+    if (localSignature !== remoteSignature) {
+        orders = remoteOrders;
+        orderIdCounter = (Number(remoteData.lastOrderId) || 0) + 1;
+        saveOrdersToStorage();
+        updateOrdersList();
     }
 }
 

@@ -16,7 +16,8 @@ const menuData = {
     ],
     curlyFries: [
         { id: 12, name: 'Curly Fries', price: 60, icon: '🍟', nameAr: 'بطاطس كيرلي', quantity: 180 },
-        { id: 41, name: 'Plate Chicken Pops', price: 120, icon: '🍗', nameAr: 'طبق تشيكن بوبس', quantity: 120 },
+        { id: 41, name: 'Plate Chicken Pops', price: 140, icon: '🍗', nameAr: 'طبق تشيكن بوبس', quantity: 120 },
+        { id: 42, name: 'Plate Shrimp', price: 245, icon: '🍤', nameAr: 'طبق جمبري', quantity: 120 },
     ],
     dessertSection: [
         { id: 13, name: 'Sweet Potato Crème Brûlée', price: 100, icon: '🍮', nameAr: 'سويت بوتيتو كريم بروليه', quantity: 120 },

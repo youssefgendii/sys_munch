@@ -1,0 +1,8 @@
+{
+  "name": "sys_munch",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0"
+  }
+}
