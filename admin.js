@@ -11,6 +11,16 @@ const saveQuantityBtn = document.getElementById('saveQuantityBtn');
 const cancelQuantityBtn = document.getElementById('cancelQuantityBtn');
 const quantityInput = document.getElementById('quantityInput');
 let currentEditingItem = null;
+const SHARED_ORDERS_API = '/.netlify/functions/orders';
+
+function getBusinessDayKey(date = new Date()) {
+    return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Africa/Cairo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(date);
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -75,20 +85,19 @@ function setupEventListeners() {
     });
 }
 
-function updateTabs() {
+async function updateTabs() {
     const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
     if (activeTab === 'today') {
-        updateTodayTab();
+        await updateTodayTab();
     } else if (activeTab === 'monthly') {
-        updateMonthlyTab();
+        await updateMonthlyTab();
     } else if (activeTab === 'inventory') {
         updateInventoryTab();
     }
 }
 
-function updateTodayTab() {
-    const today = new Date().toDateString();
-    const todayOrders = loadOrdersByDate(today);
+async function updateTodayTab() {
+    const todayOrders = await loadOrdersByDate(getBusinessDayKey());
 
     // Stats
     const totalOrders = todayOrders.length;
@@ -131,8 +140,8 @@ function updateTodayTab() {
     updateTopItems(todayOrders, 'todayTopItems');
 }
 
-function updateMonthlyTab() {
-    const allOrders = loadAllMonthlyOrders();
+async function updateMonthlyTab() {
+    const allOrders = await loadAllMonthlyOrders();
 
     // Stats
     const totalOrders = allOrders.length;
@@ -300,7 +309,23 @@ function saveQuantityChange() {
 }
 
 // Storage Functions
-function loadOrdersByDate(dateStr) {
+async function loadOrdersByDate(dateStr) {
+    try {
+        const response = await fetch(`${SHARED_ORDERS_API}?dayKey=${encodeURIComponent(dateStr)}`, {
+            cache: 'no-store'
+        });
+        if (response.ok) {
+            const payload = await response.json();
+            const sharedOrders = Array.isArray(payload.orders) ? payload.orders : [];
+            return sharedOrders.map(o => ({
+                ...o,
+                timestamp: new Date(o.timestamp)
+            }));
+        }
+    } catch (e) {
+        // fallback to local storage below
+    }
+
     const stored = localStorage.getItem('munch_orders_' + dateStr);
     if (stored) {
         try {
@@ -315,17 +340,17 @@ function loadOrdersByDate(dateStr) {
     return [];
 }
 
-function loadAllMonthlyOrders() {
+async function loadAllMonthlyOrders() {
     const orders = [];
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
 
-    for (let i = 0; i <= currentDate.getDate(); i++) {
-        const date = new Date(currentYear, currentMonth, i);
+    for (let day = 1; day <= currentDate.getDate(); day++) {
+        const date = new Date(currentYear, currentMonth, day);
         if (date > currentDate) break;
-        const dateStr = date.toDateString();
-        const dayOrders = loadOrdersByDate(dateStr);
+        const dateStr = getBusinessDayKey(date);
+        const dayOrders = await loadOrdersByDate(dateStr);
         orders.push(...dayOrders);
     }
 
@@ -381,7 +406,7 @@ function resetAllData() {
     
     if (confirm(confirmMsg)) {
         // Clear all orders from today
-        const today = new Date().toDateString();
+        const today = getBusinessDayKey();
         localStorage.removeItem('munch_orders_' + today);
         
         // Reset inventory to initial values

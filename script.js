@@ -22,6 +22,15 @@ const closeModal = document.querySelector('.close');
 const modalOrderDetails = document.getElementById('modalOrderDetails');
 const menuSectionOrder = ['snackSipCup', 'miniRozMaamar', 'curlyFries', 'dessertSection', 'munchPocketSandwiches', 'briocheSliders', 'snackClassics', 'extras'];
 
+function getBusinessDayKey() {
+    return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Africa/Cairo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(new Date());
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
     const savedLang = typeof getSavedLanguage === 'function' ? getSavedLanguage() : 'en';
@@ -461,7 +470,7 @@ function updatePageDisplay() {
 
 // Local Storage Management
 function saveOrdersToStorage() {
-    const today = new Date().toDateString();
+    const today = getBusinessDayKey();
     localStorage.setItem('munch_orders_' + today, JSON.stringify(orders.map(o => ({
         ...o,
         timestamp: o.timestamp.toISOString()
@@ -469,7 +478,7 @@ function saveOrdersToStorage() {
 }
 
 async function loadOrdersFromStorage() {
-    const today = new Date().toDateString();
+    const today = getBusinessDayKey();
     const remoteData = await getSharedOrdersForDay(today);
     if (remoteData) {
         orders = (remoteData.orders || []).map(o => ({
@@ -509,7 +518,7 @@ async function getSharedOrdersForDay(dayKey) {
 
 async function createOrderInSharedStore(order) {
     try {
-        const dayKey = new Date().toDateString();
+        const dayKey = getBusinessDayKey();
         const response = await fetch(SHARED_ORDERS_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -529,7 +538,7 @@ async function createOrderInSharedStore(order) {
 
 async function deleteOrderFromSharedStore(orderId) {
     try {
-        const dayKey = new Date().toDateString();
+        const dayKey = getBusinessDayKey();
         await fetch(SHARED_ORDERS_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -545,7 +554,7 @@ async function deleteOrderFromSharedStore(orderId) {
 }
 
 async function refreshOrdersFromShared() {
-    const today = new Date().toDateString();
+    const today = getBusinessDayKey();
     const remoteData = await getSharedOrdersForDay(today);
     if (!remoteData || !Array.isArray(remoteData.orders)) return;
 

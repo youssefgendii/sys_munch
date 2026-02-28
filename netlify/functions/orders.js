@@ -18,7 +18,12 @@ const jsonHeaders = {
 
 function sanitizeDayKey(dayKey) {
     if (typeof dayKey !== "string" || !dayKey.trim()) {
-        return new Date().toDateString();
+        return new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }).format(new Date());
     }
     return dayKey.trim();
 }

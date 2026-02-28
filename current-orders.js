@@ -19,6 +19,15 @@ const doneHeader = document.getElementById("doneHeader");
 const LANGUAGE_STORAGE_KEY = "munch_language";
 const SHARED_ORDERS_API = "/.netlify/functions/orders";
 
+function getBusinessDayKey() {
+    return new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Africa/Cairo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    }).format(new Date());
+}
+
 const pageI18n = {
     en: {
         title: "Current Orders",
@@ -85,15 +94,15 @@ function applyPageLanguage() {
 }
 
 function getTodayKey() {
-    return "munch_orders_" + new Date().toDateString();
+    return "munch_orders_" + getBusinessDayKey();
 }
 
 function getStatusKey() {
-    return "munch_order_status_" + new Date().toDateString();
+    return "munch_order_status_" + getBusinessDayKey();
 }
 
 async function loadSharedDayData() {
-    const dayKey = new Date().toDateString();
+    const dayKey = getBusinessDayKey();
     try {
         const response = await fetch(`${SHARED_ORDERS_API}?dayKey=${encodeURIComponent(dayKey)}`, {
             cache: "no-store"
@@ -168,7 +177,7 @@ async function setOrderStatus(orderKey, status) {
     saveStatusMap(statusMap);
 
     try {
-        const dayKey = new Date().toDateString();
+        const dayKey = getBusinessDayKey();
         await fetch(SHARED_ORDERS_API, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
