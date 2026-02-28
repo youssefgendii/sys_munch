@@ -1,4 +1,4 @@
-// Admin Dashboard Script
+﻿// Admin Dashboard Script
 
 // Check if logged in
 if (sessionStorage.getItem('munch_admin_logged_in') !== 'true') {
@@ -219,7 +219,7 @@ function updateTopItems(orders, elementId) {
 }
 
 function updateInventoryTab() {
-    updateInventoryTable('all');
+    updateInventoryTable('sandwiches');
 }
 
 function updateInventoryTable(category) {
@@ -251,9 +251,9 @@ function updateInventoryTable(category) {
             }
 
             if (currentLanguage === 'ar') {
-                if (item.quantity === 0) statusText = 'غير متوفر';
-                else if (item.quantity < 10) statusText = 'كمية قليلة';
-                else statusText = 'متوفر';
+                if (item.quantity === 0) statusText = 'ØºÙŠØ± Ù…ØªÙˆÙØ±';
+                else if (item.quantity < 10) statusText = 'ÙƒÙ…ÙŠØ© Ù‚Ù„ÙŠÙ„Ø©';
+                else statusText = 'Ù…ØªÙˆÙØ±';
             }
 
             return `
@@ -286,7 +286,7 @@ function saveQuantityChange() {
 
     const newQty = parseInt(quantityInput.value);
     if (isNaN(newQty) || newQty < 0) {
-        alert(currentLanguage === 'ar' ? 'الرجاء إدخال كمية صحيحة' : 'Please enter a valid quantity');
+        alert(currentLanguage === 'ar' ? 'Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø¥Ø¯Ø®Ø§Ù„ ÙƒÙ…ÙŠØ© ØµØ­ÙŠØ­Ø©' : 'Please enter a valid quantity');
         return;
     }
 
@@ -376,7 +376,7 @@ function setLanguage(lang) {
 // Reset all data for testing
 function resetAllData() {
     const confirmMsg = currentLanguage === 'ar' 
-        ? 'هل أنت متأكد من رغبتك في حذف جميع الطلبات والبيانات؟ هذا الإجراء لا يمكن التراجع عنه!'
+        ? 'Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø±ØºØ¨ØªÙƒ ÙÙŠ Ø­Ø°Ù Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø·Ù„Ø¨Ø§Øª ÙˆØ§Ù„Ø¨ÙŠØ§Ù†Ø§ØªØŸ Ù‡Ø°Ø§ Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡ Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø§Ù„ØªØ±Ø§Ø¬Ø¹ Ø¹Ù†Ù‡!'
         : 'Are you sure you want to delete ALL orders and reset inventory? This action cannot be undone!';
     
     if (confirm(confirmMsg)) {
@@ -387,39 +387,45 @@ function resetAllData() {
         // Reset inventory to initial values
         const initialInventory = {
             sandwiches: [
-                { id: 1, name: 'Pulled Beef', price: 180, icon: '🥩', nameAr: 'لحم مسحوب', quantity: 50 },
-                { id: 2, name: 'Beef Burger', price: 175, icon: '🍔', nameAr: 'برجر لحم', quantity: 45 },
-                { id: 3, name: 'Chicken Fajita', price: 140, icon: '🌮', nameAr: 'فاجيتا دجاج', quantity: 40 },
-                { id: 4, name: 'Dynamite Chicken', price: 160, icon: '🌶️', nameAr: 'دجاج ديناميت', quantity: 35 },
-                { id: 5, name: 'Falafel & Eggplants', price: 80, icon: '🟤', nameAr: 'فلافل وباذنجان', quantity: 60 },
-                { id: 6, name: 'Halloumi Cheese', price: 120, icon: '🧀', nameAr: 'جبن حلوم', quantity: 38 },
+                { id: 1, name: 'Pulled Beef', price: 180, icon: 'ðŸ¥©', nameAr: 'Ù„Ø­Ù… Ù…Ø³Ø­ÙˆØ¨', quantity: 50 },
+                { id: 2, name: 'Beef Burger', price: 175, icon: 'ðŸ”', nameAr: 'Ø¨Ø±Ø¬Ø± Ù„Ø­Ù…', quantity: 45 },
+                { id: 3, name: 'Chicken Fajita', price: 140, icon: 'ðŸŒ®', nameAr: 'ÙØ§Ø¬ÙŠØªØ§ Ø¯Ø¬Ø§Ø¬', quantity: 40 },
+                { id: 4, name: 'Dynamite Chicken', price: 160, icon: 'ðŸŒ¶ï¸', nameAr: 'Ø¯Ø¬Ø§Ø¬ Ø¯ÙŠÙ†Ø§Ù…ÙŠØª', quantity: 35 },
+                { id: 5, name: 'Falafel & Eggplants', price: 80, icon: 'ðŸŸ¤', nameAr: 'ÙÙ„Ø§ÙÙ„ ÙˆØ¨Ø§Ø°Ù†Ø¬Ø§Ù†', quantity: 60 },
+                { id: 6, name: 'Halloumi Cheese', price: 120, icon: 'ðŸ§€', nameAr: 'Ø¬Ø¨Ù† Ø­Ù„ÙˆÙ…', quantity: 38 },
             ],
             sliders: [
-                { id: 7, name: 'Beef Burger Slider', price: 140, icon: '🍔', nameAr: 'شريحة برجر لحم', quantity: 50 },
-                { id: 8, name: 'Fried Chicken Slider', price: 100, icon: '🍗', nameAr: 'شريحة دجاج مقلي', quantity: 42 },
-                { id: 9, name: 'Fried Shrimps Slider', price: 280, icon: '🍤', nameAr: 'شريحة جمبري مقلي', quantity: 28 },
+                { id: 7, name: 'Beef Burger Slider', price: 140, icon: 'ðŸ”', nameAr: 'Ø´Ø±ÙŠØ­Ø© Ø¨Ø±Ø¬Ø± Ù„Ø­Ù…', quantity: 50 },
+                { id: 8, name: 'Fried Chicken Slider', price: 100, icon: 'ðŸ—', nameAr: 'Ø´Ø±ÙŠØ­Ø© Ø¯Ø¬Ø§Ø¬ Ù…Ù‚Ù„ÙŠ', quantity: 42 },
+                { id: 9, name: 'Fried Shrimps Slider', price: 280, icon: 'ðŸ¤', nameAr: 'Ø´Ø±ÙŠØ­Ø© Ø¬Ù…Ø¨Ø±ÙŠ Ù…Ù‚Ù„ÙŠ', quantity: 28 },
             ],
             snacks: [
-                { id: 10, name: 'Burger Coin Slimmies', price: 220, icon: '💰', nameAr: 'قطع البرجر', quantity: 50 },
-                { id: 11, name: 'Mini Hawawshi', price: 150, icon: '🥖', nameAr: 'حواوشي صغير', quantity: 40 },
-                { id: 12, name: 'Tortilla Kebab Skewers', price: 250, icon: '🌯', nameAr: 'شيش طرطور الكباب', quantity: 30 },
-                { id: 13, name: 'Mini Corn Dogs', price: 140, icon: '🌭', nameAr: 'نقانق الذرة الصغيرة', quantity: 35 },
-                { id: 14, name: 'Dynamite Shrimp', price: 275, icon: '🌶️', nameAr: 'جمبري ديناميت', quantity: 25 },
-                { id: 15, name: 'Sweet Corn on the Cob', price: 75, icon: '🌽', nameAr: 'ذرة حلوة', quantity: 45 },
-                { id: 16, name: 'Stuffed Vine Leaves', price: 95, icon: '🍃', nameAr: 'ورق عنب محشي', quantity: 40 },
-                { id: 17, name: 'Loaded Chips Bag', price: 85, icon: '🥔', nameAr: 'كيس شيبسي محمل', quantity: 60 },
-                { id: 18, name: 'Mini Roz Maamor', price: 100, icon: '🍚', nameAr: 'أرز ممور صغير', quantity: 30 },
-                { id: 19, name: 'Mini Roz Maamor - Meat', price: 180, icon: '🍚', nameAr: 'أرز ممور صغير لحم', quantity: 25 },
-                { id: 20, name: 'Mini Roz Maamor - Hamam', price: 275, icon: '🍚', nameAr: 'أرز ممور صغير حمام', quantity: 20 },
-                { id: 27, name: 'Plate Chicken Tenders with Fries', price: 140, icon: '🍟', nameAr: 'صدور دجاج مع بطاطس', quantity: 55 },
+                { id: 10, name: 'Burger Coin Slimmies', price: 220, icon: 'ðŸ’°', nameAr: 'Ù‚Ø·Ø¹ Ø§Ù„Ø¨Ø±Ø¬Ø±', quantity: 50 },
+                { id: 11, name: 'Mini Hawawshi', price: 150, icon: 'ðŸ¥–', nameAr: 'Ø­ÙˆØ§ÙˆØ´ÙŠ ØµØºÙŠØ±', quantity: 40 },
+                { id: 12, name: 'Tortilla Kebab Skewers', price: 250, icon: 'ðŸŒ¯', nameAr: 'Ø´ÙŠØ´ Ø·Ø±Ø·ÙˆØ± Ø§Ù„ÙƒØ¨Ø§Ø¨', quantity: 30 },
+                { id: 13, name: 'Mini Corn Dogs', price: 140, icon: 'ðŸŒ­', nameAr: 'Ù†Ù‚Ø§Ù†Ù‚ Ø§Ù„Ø°Ø±Ø© Ø§Ù„ØµØºÙŠØ±Ø©', quantity: 35 },
+                { id: 14, name: 'Dynamite Shrimp', price: 275, icon: 'ðŸŒ¶ï¸', nameAr: 'Ø¬Ù…Ø¨Ø±ÙŠ Ø¯ÙŠÙ†Ø§Ù…ÙŠØª', quantity: 25 },
+                { id: 15, name: 'Sweet Corn on the Cob', price: 75, icon: 'ðŸŒ½', nameAr: 'Ø°Ø±Ø© Ø­Ù„ÙˆØ©', quantity: 45 },
+                { id: 16, name: 'Stuffed Vine Leaves', price: 95, icon: 'ðŸƒ', nameAr: 'ÙˆØ±Ù‚ Ø¹Ù†Ø¨ Ù…Ø­Ø´ÙŠ', quantity: 40 },
+                { id: 17, name: 'Loaded Chips Bag', price: 85, icon: 'ðŸ¥”', nameAr: 'ÙƒÙŠØ³ Ø´ÙŠØ¨Ø³ÙŠ Ù…Ø­Ù…Ù„', quantity: 60 },
+                { id: 18, name: 'Mini Roz Maamor', price: 100, icon: 'ðŸš', nameAr: 'Ø£Ø±Ø² Ù…Ù…ÙˆØ± ØµØºÙŠØ±', quantity: 30 },
+                { id: 19, name: 'Mini Roz Maamor - Meat', price: 180, icon: 'ðŸš', nameAr: 'Ø£Ø±Ø² Ù…Ù…ÙˆØ± ØµØºÙŠØ± Ù„Ø­Ù…', quantity: 25 },
+                { id: 20, name: 'Mini Roz Maamor - Hamam', price: 275, icon: 'ðŸš', nameAr: 'Ø£Ø±Ø² Ù…Ù…ÙˆØ± ØµØºÙŠØ± Ø­Ù…Ø§Ù…', quantity: 20 },
+                { id: 27, name: 'Plate Chicken Tenders with Fries', price: 140, icon: 'ðŸŸ', nameAr: 'ØµØ¯ÙˆØ± Ø¯Ø¬Ø§Ø¬ Ù…Ø¹ Ø¨Ø·Ø§Ø·Ø³', quantity: 55 },
+                { id: 28, name: 'Fries Cup', price: 100, icon: 'â˜•', nameAr: 'ÙƒÙˆØ¨ Ø¨Ø·Ø§Ø·Ø³', quantity: 100 },
+            ],
+            extras: [
+                { id: 29, name: 'Soft Drink', price: 30, icon: '🥤', nameAr: 'مشروب غازي', quantity: 200 },
+                { id: 30, name: 'Extra Sauce', price: 10, icon: '🥫', nameAr: 'صوص إضافي', quantity: 300 },
+                { id: 34, name: 'Truffle Mayo', price: 30, icon: '🍄', nameAr: 'مايونيز ترافل', quantity: 150 },
             ],
             desserts: [
-                { id: 21, name: 'Sweet Potato Crème Brûlée', price: 100, icon: '🍮', nameAr: 'كريمة البطاطا الحلوة', quantity: 32 },
-                { id: 22, name: 'Vanilla Ice Cream', price: 20, icon: '🍦', nameAr: 'آيس كريم فانيليا', quantity: 100 },
-                { id: 23, name: 'Cookie Fries', price: 80, icon: '🍪', nameAr: 'بسكويت مقلي', quantity: 44 },
-                { id: 24, name: 'Cookie Sandwich', price: 180, icon: '🍪', nameAr: 'سندويتش البسكويت', quantity: 25 },
-                { id: 25, name: 'Strawberry Dubai Kunafa', price: 150, icon: '🍓', nameAr: 'كنافة فراولة دبي', quantity: 20 },
-                { id: 26, name: 'Tiramisu Cup', price: 100, icon: '☕', nameAr: 'كوب تيراميسو', quantity: 30 },
+                { id: 21, name: 'Sweet Potato CrÃ¨me BrÃ»lÃ©e', price: 100, icon: 'ðŸ®', nameAr: 'ÙƒØ±ÙŠÙ…Ø© Ø§Ù„Ø¨Ø·Ø§Ø·Ø§ Ø§Ù„Ø­Ù„ÙˆØ©', quantity: 32 },
+                { id: 22, name: 'Vanilla Ice Cream', price: 20, icon: 'ðŸ¦', nameAr: 'Ø¢ÙŠØ³ ÙƒØ±ÙŠÙ… ÙØ§Ù†ÙŠÙ„ÙŠØ§', quantity: 100 },
+                { id: 23, name: 'Cookie Fries', price: 80, icon: 'ðŸª', nameAr: 'Ø¨Ø³ÙƒÙˆÙŠØª Ù…Ù‚Ù„ÙŠ', quantity: 44 },
+                { id: 24, name: 'Cookie Sandwich', price: 180, icon: 'ðŸª', nameAr: 'Ø³Ù†Ø¯ÙˆÙŠØªØ´ Ø§Ù„Ø¨Ø³ÙƒÙˆÙŠØª', quantity: 25 },
+                { id: 25, name: 'Strawberry Dubai Kunafa', price: 150, icon: 'ðŸ“', nameAr: 'ÙƒÙ†Ø§ÙØ© ÙØ±Ø§ÙˆÙ„Ø© Ø¯Ø¨ÙŠ', quantity: 20 },
+                { id: 26, name: 'Tiramisu Cup', price: 100, icon: 'â˜•', nameAr: 'ÙƒÙˆØ¨ ØªÙŠØ±Ø§Ù…ÙŠØ³Ùˆ', quantity: 30 },
             ]
         };
         
@@ -434,7 +440,7 @@ function resetAllData() {
             window.location.reload();
         }, 500);
         
-        const msg = currentLanguage === 'ar' ? '✅ تم إعادة تعيين جميع البيانات!' : '✅ All data has been reset!';
+        const msg = currentLanguage === 'ar' ? 'âœ… ØªÙ… Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª!' : 'âœ… All data has been reset!';
         alert(msg);
     }
 }
@@ -442,7 +448,7 @@ function resetAllData() {
 // Logout function
 function logout() {
     const confirmMsg = currentLanguage === 'ar' 
-        ? 'هل أنت متأكد من رغبتك في تسجيل الخروج؟'
+        ? 'Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø±ØºØ¨ØªÙƒ ÙÙŠ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬ØŸ'
         : 'Are you sure you want to logout?';
     
     if (confirm(confirmMsg)) {
@@ -451,3 +457,4 @@ function logout() {
         window.location.href = 'login.html';
     }
 }
+

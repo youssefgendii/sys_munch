@@ -1,4 +1,4 @@
-// State management
+﻿// State management
 let cart = [];
 let orders = [];
 let orderIdCounter = 1;
@@ -14,12 +14,12 @@ const dailySummaryEl = document.getElementById('dailySummary');
 const orderCountEl = document.getElementById('orderCount');
 const clearBtn = document.getElementById('clearBtn');
 const completeBtn = document.getElementById('completeBtn');
-const categoryBtns = document.querySelectorAll('.category-btn');
 const langBtns = document.querySelectorAll('.lang-btn');
 const timeDisplay = document.getElementById('timeDisplay');
 const modal = document.getElementById('orderModal');
 const closeModal = document.querySelector('.close');
 const modalOrderDetails = document.getElementById('modalOrderDetails');
+const menuSectionOrder = ['sandwiches', 'sliders', 'snacks', 'extras', 'desserts'];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,16 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupEventListeners() {
-    // Category filters
-    categoryBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            const category = e.target.getAttribute('data-category');
-            displayMenuItems(category);
-        });
-    });
-
     // Language switcher
     langBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -73,24 +63,46 @@ function setupEventListeners() {
 }
 
 function initializeMenu() {
-    displayMenuItems('all');
+    displayMenuItems('all-sections');
+}
+
+function createMenuItemCard(item) {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'menu-item';
+    itemEl.innerHTML = `
+        <div class="menu-item-icon">${item.icon}</div>
+        <div class="menu-item-name">${getMenuItemName(item)}</div>
+        <div class="menu-item-price">${item.price} LE</div>
+    `;
+    itemEl.addEventListener('click', () => addToCart(item));
+    return itemEl;
 }
 
 function displayMenuItems(category) {
-    const items = getMenuItemsByCategory(category);
     menuGrid.innerHTML = '';
 
-    items.forEach(item => {
-        const itemEl = document.createElement('div');
-        itemEl.className = 'menu-item';
-        itemEl.innerHTML = `
-            <div class="menu-item-icon">${item.icon}</div>
-            <div class="menu-item-name">${getMenuItemName(item)}</div>
-            <div class="menu-item-price">${item.price} ${t('price') === 'Price' ? 'LE' : 'ل.ع'}</div>
-        `;
-        itemEl.addEventListener('click', () => addToCart(item));
-        menuGrid.appendChild(itemEl);
-    });
+    if (category === 'all-sections') {
+        menuSectionOrder.forEach(section => {
+            const sectionItems = getMenuItemsByCategory(section);
+            if (sectionItems.length === 0) return;
+
+            const sectionEl = document.createElement('section');
+            sectionEl.className = 'menu-category-section';
+            sectionEl.innerHTML = `<h3 class="menu-section-title">${t(section)}</h3>`;
+
+            const sectionGridEl = document.createElement('div');
+            sectionGridEl.className = 'menu-section-grid';
+            sectionItems.forEach(item => sectionGridEl.appendChild(createMenuItemCard(item)));
+
+            sectionEl.appendChild(sectionGridEl);
+            menuGrid.appendChild(sectionEl);
+        });
+        return;
+    }
+
+    const items = getMenuItemsByCategory(category);
+
+    items.forEach(item => menuGrid.appendChild(createMenuItemCard(item)));
 }
 
 function addToCart(item) {
@@ -147,9 +159,9 @@ function updateCartDisplay() {
                 </div>
                 <div class="order-item-price">${itemTotal} LE</div>
                 <div class="order-item-actions">
-                    <button class="qty-btn" data-id="${item.id}" data-action="minus">−</button>
+                    <button class="qty-btn" data-id="${item.id}" data-action="minus">âˆ’</button>
                     <button class="qty-btn" data-id="${item.id}" data-action="plus">+</button>
-                    <button class="remove-btn" data-id="${item.id}">✕</button>
+                    <button class="remove-btn" data-id="${item.id}">âœ•</button>
                 </div>
             `;
             
@@ -175,7 +187,7 @@ function updateTotals() {
 }
 
 function clearOrder() {
-    if (cart.length > 0 && confirm(currentLanguage === 'ar' ? 'هل أنت متأكد من حذف الطلب؟' : 'Are you sure you want to clear the order?')) {
+    if (cart.length > 0 && confirm(currentLanguage === 'ar' ? 'Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨ØŸ' : 'Are you sure you want to clear the order?')) {
         cart = [];
         updateCartDisplay();
     }
@@ -183,7 +195,7 @@ function clearOrder() {
 
 function confirmOrder() {
     if (cart.length === 0) {
-        alert(currentLanguage === 'ar' ? 'الرجاء إضافة عناصر إلى الطلب' : 'Please add items to the order');
+        alert(currentLanguage === 'ar' ? 'Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø¹Ù†Ø§ØµØ± Ø¥Ù„Ù‰ Ø§Ù„Ø·Ù„Ø¨' : 'Please add items to the order');
         return;
     }
 
@@ -203,12 +215,12 @@ function confirmOrder() {
     // If not enough inventory, show alert
     if (insufficientItems.length > 0) {
         let message = currentLanguage === 'ar' 
-            ? 'الكمية المتاحة غير كافية:\n\n'
+            ? 'Ø§Ù„ÙƒÙ…ÙŠØ© Ø§Ù„Ù…ØªØ§Ø­Ø© ØºÙŠØ± ÙƒØ§ÙÙŠØ©:\n\n'
             : 'Insufficient quantity:\n\n';
         
         insufficientItems.forEach(item => {
             if (currentLanguage === 'ar') {
-                message += `${item.name}: ${item.available} متوفر، ${item.requested} مطلوب\n`;
+                message += `${item.name}: ${item.available} Ù…ØªÙˆÙØ±ØŒ ${item.requested} Ù…Ø·Ù„ÙˆØ¨\n`;
             } else {
                 message += `${item.name}: ${item.available} available, ${item.requested} requested\n`;
             }
@@ -247,7 +259,7 @@ function confirmOrder() {
     updateOrdersList();
 
     // Show confirmation message
-    const message = currentLanguage === 'ar' ? `تم تأكيد الطلب #${order.id}` : `Order #${order.id} confirmed!`;
+    const message = currentLanguage === 'ar' ? `ØªÙ… ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø·Ù„Ø¨ #${order.id}` : `Order #${order.id} confirmed!`;
     showNotification(message);
 }
 
@@ -270,7 +282,7 @@ function updateOrdersList() {
                 ? order.timestamp.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
                 : order.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             
-            const deleteText = currentLanguage === 'ar' ? '✕ حذف' : '✕ Delete';
+            const deleteText = currentLanguage === 'ar' ? 'âœ• Ø­Ø°Ù' : 'âœ• Delete';
             
             cardEl.innerHTML = `
                 <div class="order-card-header">
@@ -278,7 +290,7 @@ function updateOrdersList() {
                         <span class="order-card-id">${t('order')} #${order.id}</span>
                         <span class="order-card-time">${timeFormat}</span>
                     </div>
-                    <button class="order-delete-btn" data-index="${index}" title="${deleteText}">✕</button>
+                    <button class="order-delete-btn" data-index="${index}" title="${deleteText}">âœ•</button>
                 </div>
                 <div class="order-card-items">${itemsList}</div>
                 <div class="order-card-price">${order.total.toFixed(2)} LE</div>
@@ -306,7 +318,7 @@ function updateOrdersList() {
 function deleteOrder(index) {
     const order = orders[index];
     const confirmText = currentLanguage === 'ar' 
-        ? `هل أنت متأكد من حذف الطلب #${order.id}؟` 
+        ? `Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨ #${order.id}ØŸ` 
         : `Are you sure you want to delete Order #${order.id}?`;
     
     if (confirm(confirmText)) {
@@ -315,7 +327,7 @@ function deleteOrder(index) {
         updateOrdersList();
         
         const message = currentLanguage === 'ar' 
-            ? `تم حذف الطلب #${order.id}` 
+            ? `ØªÙ… Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨ #${order.id}` 
             : `Order #${order.id} deleted`;
         showNotification(message);
     }
@@ -405,8 +417,8 @@ function showAlert(message, itemName) {
         border-left: 4px solid #e74c3c;
     `;
     alertBox.innerHTML = `
-        <div style="font-size: 24px; margin-bottom: 15px;">⚠️</div>
-        <div style="font-weight: bold; margin-bottom: 10px; color: #e74c3c;">${currentLanguage === 'ar' ? 'عدم توفر الكمية' : 'Insufficient Stock'}</div>
+        <div style="font-size: 24px; margin-bottom: 15px;">âš ï¸</div>
+        <div style="font-weight: bold; margin-bottom: 10px; color: #e74c3c;">${currentLanguage === 'ar' ? 'Ø¹Ø¯Ù… ØªÙˆÙØ± Ø§Ù„ÙƒÙ…ÙŠØ©' : 'Insufficient Stock'}</div>
         <div style="color: #2c3e50; margin-bottom: 20px; white-space: pre-wrap; font-size: 14px;">${message}</div>
         <button id="closeAlert" style="
             background: #e74c3c;
@@ -416,7 +428,7 @@ function showAlert(message, itemName) {
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-        ">${currentLanguage === 'ar' ? 'حسناً' : 'OK'}</button>
+        ">${currentLanguage === 'ar' ? 'Ø­Ø³Ù†Ø§Ù‹' : 'OK'}</button>
     `;
     
     document.body.appendChild(alertBox);
@@ -429,7 +441,7 @@ function showAlert(message, itemName) {
 }
 
 function updatePageDisplay() {
-    displayMenuItems(document.querySelector('.category-btn.active').getAttribute('data-category'));
+    displayMenuItems('all-sections');
     updateCartDisplay();
     updateOrdersList();
 }
@@ -491,3 +503,4 @@ function getMenuItemById(id) {
     }
     return null;
 }
+
