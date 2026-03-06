@@ -16,6 +16,7 @@ const doneLabel = document.getElementById("doneLabel");
 const lastUpdateLabel = document.getElementById("lastUpdateLabel");
 const inProgressHeader = document.getElementById("inProgressHeader");
 const doneHeader = document.getElementById("doneHeader");
+
 const LANGUAGE_STORAGE_KEY = "munch_language";
 const SHARED_ORDERS_API = "/.netlify/functions/orders";
 
@@ -42,24 +43,26 @@ const pageI18n = {
         noDone: "No done orders",
         markDone: "Mark Done",
         markProgress: "Move to In Progress",
+        delete: "Delete",
         order: "Order",
         total: "Total"
     },
     ar: {
-        title: "\u0627\u0644\u0637\u0644\u0628\u0627\u062a \u0627\u0644\u062d\u0627\u0644\u064a\u0629",
-        subtitle: "\u0639\u0631\u0636 \u0627\u0644\u0645\u0637\u0628\u062e - \u062a\u062d\u062f\u064a\u062b \u062a\u0644\u0642\u0627\u0626\u064a \u0643\u0644 \u062b\u0627\u0646\u064a\u062a\u064a\u0646",
-        refresh: "\u062a\u062d\u062f\u064a\u062b",
-        back: "\u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0643\u0627\u0634\u064a\u0631",
-        orders: "\u0627\u0644\u0637\u0644\u0628\u0627\u062a",
-        inProgress: "\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0636\u064a\u0631",
-        done: "\u062a\u0645\u062a",
-        lastUpdate: "\u0622\u062e\u0631 \u062a\u062d\u062f\u064a\u062b",
-        noInProgress: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u062c\u0627\u0631\u064a\u0629",
-        noDone: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0637\u0644\u0628\u0627\u062a \u0645\u0646\u062a\u0647\u064a\u0629",
-        markDone: "\u062a\u0639\u064a\u064a\u0646 \u0643\u0645\u0646\u062a\u0647\u064a",
-        markProgress: "\u0625\u0639\u0627\u062f\u0629 \u0625\u0644\u0649 \u062c\u0627\u0631\u064a",
-        order: "\u0637\u0644\u0628",
-        total: "\u0627\u0644\u0625\u062c\u0645\u0627\u0644\u064a"
+        title: "الطلبات الحالية",
+        subtitle: "عرض المطبخ - تحديث تلقائي كل ثانيتين",
+        refresh: "تحديث",
+        back: "العودة إلى الكاشير",
+        orders: "الطلبات",
+        inProgress: "جاري التحضير",
+        done: "تمت",
+        lastUpdate: "آخر تحديث",
+        noInProgress: "لا توجد طلبات جارية",
+        noDone: "لا توجد طلبات منتهية",
+        markDone: "تعيين كمنتهي",
+        markProgress: "إعادة إلى جاري",
+        delete: "حذف",
+        order: "طلب",
+        total: "الإجمالي"
     }
 };
 
@@ -67,7 +70,7 @@ function getCurrentLanguage() {
     try {
         const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
         return saved === "ar" ? "ar" : "en";
-    } catch (e) {
+    } catch {
         return "en";
     }
 }
@@ -79,8 +82,10 @@ function tr(key) {
 
 function applyPageLanguage() {
     const lang = getCurrentLanguage();
+
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
     pageTitle.textContent = tr("title");
     pageSubtitle.textContent = tr("subtitle");
     refreshBtn.textContent = tr("refresh");
@@ -103,12 +108,15 @@ function getStatusKey() {
 
 async function loadSharedDayData() {
     const dayKey = getBusinessDayKey();
+
     try {
         const response = await fetch(`${SHARED_ORDERS_API}?dayKey=${encodeURIComponent(dayKey)}`, {
             cache: "no-store"
         });
+
         if (response.ok) {
             const payload = await response.json();
+
             const parsedOrders = Array.isArray(payload.orders) ? payload.orders : [];
             const parsedStatus = payload.statusMap && typeof payload.statusMap === "object" ? payload.statusMap : {};
 
@@ -117,35 +125,29 @@ async function loadSharedDayData() {
 
             return { orders: parsedOrders, statusMap: parsedStatus };
         }
-    } catch (e) {
-        // fall back to local storage
-    }
+    } catch { }
 
     const rawOrders = localStorage.getItem(getTodayKey());
     const rawStatus = localStorage.getItem(getStatusKey());
+
     let parsedOrders = [];
     let parsedStatus = {};
 
-    try {
-        parsedOrders = rawOrders ? JSON.parse(rawOrders) : [];
-    } catch (e) {
-        parsedOrders = [];
-    }
-
-    try {
-        parsedStatus = rawStatus ? JSON.parse(rawStatus) : {};
-    } catch (e) {
-        parsedStatus = {};
-    }
+    try { parsedOrders = rawOrders ? JSON.parse(rawOrders) : []; } catch { }
+    try { parsedStatus = rawStatus ? JSON.parse(rawStatus) : {}; } catch { }
 
     return { orders: parsedOrders, statusMap: parsedStatus };
 }
 
 function normalizeOrder(order, index) {
     const timestamp = new Date(order.timestamp || Date.now());
+
     const rawId = Number(order.id);
     const hasValidId = Number.isFinite(rawId) && rawId > 0;
-    const uid = hasValidId ? `id_${rawId}` : `ts_${timestamp.getTime()}_${index}`;
+
+    const uid = hasValidId
+        ? `id_${rawId}`
+        : `ts_${timestamp.getTime()}_${index}`;
 
     return {
         ...order,
@@ -160,11 +162,7 @@ function normalizeOrder(order, index) {
 function loadStatusMap() {
     const raw = localStorage.getItem(getStatusKey());
     if (!raw) return {};
-    try {
-        return JSON.parse(raw);
-    } catch (e) {
-        return {};
-    }
+    try { return JSON.parse(raw); } catch { return {}; }
 }
 
 function saveStatusMap(statusMap) {
@@ -173,11 +171,13 @@ function saveStatusMap(statusMap) {
 
 async function setOrderStatus(orderKey, status) {
     const statusMap = loadStatusMap();
+
     statusMap[String(orderKey)] = status;
     saveStatusMap(statusMap);
 
     try {
         const dayKey = getBusinessDayKey();
+
         await fetch(SHARED_ORDERS_API, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -188,25 +188,65 @@ async function setOrderStatus(orderKey, status) {
                 status
             })
         });
-    } catch (e) {
-        // Keep local status if remote update fails.
+
+    } catch { }
+}
+
+async function deleteOrder(orderKey) {
+
+    const rawOrders = localStorage.getItem(getTodayKey());
+    let orders = [];
+
+    try {
+        orders = rawOrders ? JSON.parse(rawOrders) : [];
+    } catch {
+        orders = [];
     }
+
+    const normalized = orders.map((o, i) => normalizeOrder(o, i));
+    const filtered = normalized.filter(o => o.uid !== orderKey);
+
+    localStorage.setItem(getTodayKey(), JSON.stringify(filtered));
+
+    const statusMap = loadStatusMap();
+    delete statusMap[orderKey];
+    saveStatusMap(statusMap);
+
+    try {
+        const dayKey = getBusinessDayKey();
+
+        await fetch(SHARED_ORDERS_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "deleteOrder",
+                dayKey,
+                orderKey
+            })
+        });
+
+    } catch { }
 }
 
 function cleanupStatusMap(orders, statusMap) {
-    const existingIds = new Set(orders.map((order) => String(order.uid)));
+
+    const existingIds = new Set(orders.map(o => String(o.uid)));
     let changed = false;
-    Object.keys(statusMap).forEach((id) => {
+
+    Object.keys(statusMap).forEach(id => {
         if (!existingIds.has(id)) {
             delete statusMap[id];
             changed = true;
         }
     });
+
     if (changed) saveStatusMap(statusMap);
 }
 
 function formatTime(date) {
+
     const locale = getCurrentLanguage() === "ar" ? "ar-EG" : "en-US";
+
     return date.toLocaleTimeString(locale, {
         hour: "2-digit",
         minute: "2-digit",
@@ -216,107 +256,151 @@ function formatTime(date) {
 }
 
 async function renderOrders() {
+
     applyPageLanguage();
+
     const dayData = await loadSharedDayData();
+
     const orders = (dayData.orders || [])
         .map((order, index) => normalizeOrder(order, index))
         .sort((a, b) => b.timestamp - a.timestamp);
+
     const statusMap = dayData.statusMap || {};
+
     cleanupStatusMap(orders, statusMap);
 
     const inProgressOrders = [];
     const doneOrders = [];
 
-    orders.forEach((order) => {
+    orders.forEach(order => {
         const state = statusMap[String(order.uid)] || "inprogress";
-        if (state === "done") {
-            doneOrders.push(order);
-        } else {
-            inProgressOrders.push(order);
-        }
+
+        if (state === "done") doneOrders.push(order);
+        else inProgressOrders.push(order);
     });
 
-    orderCount.textContent = String(orders.length);
-    inProgressCount.textContent = String(inProgressOrders.length);
-    doneCount.textContent = String(doneOrders.length);
-    inProgressBadge.textContent = String(inProgressOrders.length);
-    doneBadge.textContent = String(doneOrders.length);
+    orderCount.textContent = orders.length;
+    inProgressCount.textContent = inProgressOrders.length;
+    doneCount.textContent = doneOrders.length;
+
+    inProgressBadge.textContent = inProgressOrders.length;
+    doneBadge.textContent = doneOrders.length;
+
     lastUpdate.textContent = formatTime(new Date());
 
     inProgressContainer.innerHTML = inProgressOrders.length === 0
         ? `<div class="empty-state">${tr("noInProgress")}</div>`
-        : inProgressOrders.map((order) => {
-        const items = order.items.map((item) => `
+        : inProgressOrders.map(order => {
+
+            const items = order.items.map(item => `
             <div class="item-row">
                 <span class="item-name">${getCurrentLanguage() === "ar" ? (item.nameAr || item.name) : item.name}</span>
                 <span class="item-qty">x${item.quantity}</span>
             </div>
         `).join("");
 
-        return `
-            <article class="order-card">
-                <div class="order-top">
-                    <div class="order-id">${tr("order")}${order.displayId ? ` #${order.displayId}` : ""}</div>
-                    <div class="order-time">${formatTime(order.timestamp)}</div>
-                </div>
-                <div class="item-list">${items}</div>
-                <div class="order-total">
-                    <span>${tr("total")}:</span>
-                    <span>${order.total.toFixed(2)} LE</span>
-                </div>
-                <div class="order-actions">
-                    <button class="state-btn mark-done" data-order-key="${order.uid}" data-next-state="done">${tr("markDone")}</button>
-                </div>
-            </article>
+            return `
+        <article class="order-card">
+            <div class="order-top">
+                <div class="order-id">${tr("order")} ${order.displayId ? "#" + order.displayId : ""}</div>
+                <div class="order-time">${formatTime(order.timestamp)}</div>
+            </div>
+
+            <div class="item-list">${items}</div>
+
+            <div class="order-total">
+                <span>${tr("total")}:</span>
+                <span>${order.total.toFixed(2)} LE</span>
+            </div>
+
+            <div class="order-actions">
+                <button class="state-btn mark-done" data-order-key="${order.uid}" data-next-state="done">${tr("markDone")}</button>
+                <button class="state-btn delete-order" data-delete-key="${order.uid}">${tr("delete")}</button>
+            </div>
+        </article>
         `;
-    }).join("");
+        }).join("");
 
     doneContainer.innerHTML = doneOrders.length === 0
         ? `<div class="empty-state">${tr("noDone")}</div>`
-        : doneOrders.map((order) => {
-        const items = order.items.map((item) => `
+        : doneOrders.map(order => {
+
+            const items = order.items.map(item => `
             <div class="item-row">
                 <span class="item-name">${getCurrentLanguage() === "ar" ? (item.nameAr || item.name) : item.name}</span>
                 <span class="item-qty">x${item.quantity}</span>
             </div>
         `).join("");
 
-        return `
-            <article class="order-card done-card">
-                <div class="order-top">
-                    <div class="order-id">${tr("order")}${order.displayId ? ` #${order.displayId}` : ""}</div>
-                    <div class="order-time">${formatTime(order.timestamp)}</div>
-                </div>
-                <div class="item-list">${items}</div>
-                <div class="order-total">
-                    <span>${tr("total")}:</span>
-                    <span>${order.total.toFixed(2)} LE</span>
-                </div>
-                <div class="order-actions">
-                    <button class="state-btn mark-progress" data-order-key="${order.uid}" data-next-state="inprogress">${tr("markProgress")}</button>
-                </div>
-            </article>
+            return `
+        <article class="order-card done-card">
+            <div class="order-top">
+                <div class="order-id">${tr("order")} ${order.displayId ? "#" + order.displayId : ""}</div>
+                <div class="order-time">${formatTime(order.timestamp)}</div>
+            </div>
+
+            <div class="item-list">${items}</div>
+
+            <div class="order-total">
+                <span>${tr("total")}:</span>
+                <span>${order.total.toFixed(2)} LE</span>
+            </div>
+
+            <div class="order-actions">
+                <button class="state-btn mark-progress" data-order-key="${order.uid}" data-next-state="inprogress">${tr("markProgress")}</button>
+                <button class="state-btn delete-order" data-delete-key="${order.uid}">${tr("delete")}</button>
+            </div>
+        </article>
         `;
-    }).join("");
+        }).join("");
 }
 
 refreshBtn.addEventListener("click", renderOrders);
+
 window.addEventListener("storage", renderOrders);
-inProgressContainer.addEventListener("click", async (event) => {
+
+inProgressContainer.addEventListener("click", async event => {
+
+    const deleteBtn = event.target.closest("button[data-delete-key]");
+    if (deleteBtn) {
+        const key = deleteBtn.getAttribute("data-delete-key");
+        if (confirm("Delete this order?")) {
+            await deleteOrder(key);
+            renderOrders();
+        }
+        return;
+    }
+
     const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
+
     const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
+
     await setOrderStatus(orderKey, nextState);
-    await renderOrders();
+    renderOrders();
 });
-doneContainer.addEventListener("click", async (event) => {
+
+doneContainer.addEventListener("click", async event => {
+
+    const deleteBtn = event.target.closest("button[data-delete-key]");
+    if (deleteBtn) {
+        const key = deleteBtn.getAttribute("data-delete-key");
+        if (confirm("Delete this order?")) {
+            await deleteOrder(key);
+            renderOrders();
+        }
+        return;
+    }
+
     const btn = event.target.closest("button[data-order-key]");
     if (!btn) return;
+
     const orderKey = btn.getAttribute("data-order-key");
     const nextState = btn.getAttribute("data-next-state");
+
     await setOrderStatus(orderKey, nextState);
-    await renderOrders();
+    renderOrders();
 });
 
 renderOrders();
