@@ -443,6 +443,8 @@ function resetAllData() {
                 { id: 29, name: 'Soft Drink', price: 30, icon: '🥤', nameAr: 'مشروب غازي', quantity: 200 },
                 { id: 30, name: 'Extra Sauce', price: 10, icon: '🥫', nameAr: 'صوص إضافي', quantity: 300 },
                 { id: 34, name: 'Truffle Mayo', price: 30, icon: '🍄', nameAr: 'مايونيز ترافل', quantity: 150 },
+                { id: 43, name: 'Cherry Cola', price: 45, icon: '🥤', nameAr: 'كولا كرز', quantity: 200 },
+                { id: 44, name: 'Passion Fruit', price: 50, icon: '🥤', nameAr: 'باشن فروت', quantity: 200 },
             ],
             desserts: [
                 { id: 21, name: 'Sweet Potato CrÃ¨me BrÃ»lÃ©e', price: 100, icon: 'ðŸ®', nameAr: 'ÙƒØ±ÙŠÙ…Ø© Ø§Ù„Ø¨Ø·Ø§Ø·Ø§ Ø§Ù„Ø­Ù„ÙˆØ©', quantity: 32 },

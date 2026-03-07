@@ -35,7 +35,8 @@ body {
 }
 
 .container {
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
 }
@@ -115,7 +116,8 @@ body {
     gap: 20px;
     padding: 20px;
     flex: 1;
-    overflow: hidden;
+    min-height: 0;
+    overflow: auto;
 }
 
 /* Menu Section */
@@ -249,7 +251,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .current-order,
@@ -464,11 +466,56 @@ body {
 
 .daily-orders {
     flex: 0.8;
-    overflow: hidden;
+    overflow: visible;
+}
+
+/* Make Today's Orders panel readable on all screen sizes */
+.orders-header h2 {
+    font-size: clamp(1.25rem, 1.4vw, 1.9rem);
+}
+
+.order-count {
+    font-size: clamp(0.95rem, 1vw, 1.2rem);
+    min-width: 52px;
+    text-align: center;
+    padding: 8px 14px;
+}
+
+.orders-list {
+    min-height: 180px;
+    padding: 14px;
+}
+
+.order-card {
+    padding: 14px;
+    border-radius: 10px;
+}
+
+.order-card-id {
+    font-size: clamp(0.95rem, 1vw, 1.1rem);
+}
+
+.order-card-time {
+    font-size: clamp(0.85rem, 0.9vw, 1rem);
+}
+
+.order-card-items {
+    font-size: clamp(0.95rem, 1vw, 1.08rem);
+    line-height: 1.45;
+}
+
+.order-card-price {
+    font-size: clamp(1rem, 1.1vw, 1.2rem);
+}
+
+.admin-link,
+.chef-link {
+    font-size: clamp(1rem, 1.1vw, 1.2rem);
+    padding: 14px;
 }
 
 .admin-link-section {
-    margin-top: 15px;
+    margin-top: auto;
     padding-top: 10px;
     border-top: 1px solid var(--border-color);
 }
@@ -661,7 +708,7 @@ body {
 
     .order-section {
         grid-column: 1;
-        max-height: 400px;
+        max-height: none;
     }
 }
 
@@ -856,37 +903,49 @@ body {
     .daily-orders {
         flex: 1;
         padding: 15px;
-        max-height: 250px;
-        overflow-y: auto;
+        max-height: none;
+        overflow: visible;
         order: 2;
     }
 
     .orders-header h2 {
-        font-size: 16px;
+        font-size: 26px;
         margin-bottom: 10px;
     }
 
     .order-count {
-        font-size: 11px;
-        padding: 3px 10px;
+        font-size: 18px;
+        padding: 8px 14px;
     }
 
     .orders-list {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
+        max-height: min(46vh, 420px);
+        min-height: 220px;
+        padding: 12px;
     }
 
     .order-card {
-        padding: 8px;
-        margin-bottom: 6px;
-        font-size: 11px;
+        padding: 14px;
+        margin-bottom: 10px;
+        font-size: 16px;
     }
 
     .order-card-id {
-        font-size: 11px;
+        font-size: 16px;
     }
 
     .order-card-time {
-        font-size: 10px;
+        font-size: 14px;
+    }
+
+    .order-card-items {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .order-card-price {
+        font-size: 18px;
     }
 
     .admin-link-section {
@@ -895,9 +954,14 @@ body {
     }
 
     .admin-link {
-        padding: 10px;
-        font-size: 12px;
+        padding: 14px;
+        font-size: 20px;
         width: 100%;
+    }
+
+    .chef-link {
+        padding: 14px;
+        font-size: 20px;
     }
 
     .modal-content {
@@ -1137,7 +1201,7 @@ body {
     }
 
     .daily-orders {
-        padding: 12px;
+        padding: 14px;
         max-height: none;
         order: 2;
     }
@@ -1147,30 +1211,31 @@ body {
     }
 
     .orders-header h2 {
-        font-size: 14px;
+        font-size: 24px;
         margin-bottom: 8px;
     }
 
     .order-count {
-        font-size: 10px;
-        padding: 3px 8px;
+        font-size: 18px;
+        padding: 8px 14px;
     }
 
     .orders-list {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 6px;
-        max-height: 150px;
+        gap: 10px;
+        max-height: min(44vh, 360px);
+        min-height: 210px;
         overflow-y: auto;
     }
 
     .order-card {
-        padding: 6px;
+        padding: 12px;
         margin-bottom: 0;
-        font-size: 10px;
+        font-size: 14px;
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 6px;
     }
 
     .order-card-header {
@@ -1180,22 +1245,22 @@ body {
     }
 
     .order-card-id {
-        font-size: 10px;
+        font-size: 15px;
         font-weight: bold;
     }
 
     .order-card-time {
-        font-size: 9px;
+        font-size: 13px;
         opacity: 0.8;
     }
 
     .order-card-items {
-        font-size: 10px;
+        font-size: 15px;
         margin: 2px 0;
     }
 
     .order-card-price {
-        font-size: 11px;
+        font-size: 17px;
         font-weight: bold;
     }
 
@@ -1211,14 +1276,14 @@ body {
     }
 
     .admin-link {
-        padding: 10px;
-        font-size: 12px;
+        padding: 14px;
+        font-size: 19px;
         width: 100%;
     }
 
     .chef-link {
-        padding: 10px;
-        font-size: 13px;
+        padding: 14px;
+        font-size: 19px;
         margin-top: 6px;
     }
 

@@ -171,9 +171,9 @@ function updateCartDisplay() {
                 </div>
                 <div class="order-item-price">${itemTotal} LE</div>
                 <div class="order-item-actions">
-                    <button class="qty-btn" data-id="${item.id}" data-action="minus">âˆ’</button>
+                    <button class="qty-btn" data-id="${item.id}" data-action="minus">-</button>
                     <button class="qty-btn" data-id="${item.id}" data-action="plus">+</button>
-                    <button class="remove-btn" data-id="${item.id}">âœ•</button>
+                    <button class="remove-btn" data-id="${item.id}">X</button>
                 </div>
             `;
             
@@ -303,7 +303,7 @@ function updateOrdersList() {
                 ? order.timestamp.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
                 : order.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             
-            const deleteText = currentLanguage === 'ar' ? 'âœ• Ø­Ø°Ù' : 'âœ• Delete';
+            const deleteText = currentLanguage === 'ar' ? 'حذف' : 'Delete';
             
             cardEl.innerHTML = `
                 <div class="order-card-header">
@@ -311,7 +311,7 @@ function updateOrdersList() {
                         <span class="order-card-id">${t('order')} #${order.id}</span>
                         <span class="order-card-time">${timeFormat}</span>
                     </div>
-                    <button class="order-delete-btn" data-index="${index}" title="${deleteText}">âœ•</button>
+                    <button class="order-delete-btn" data-index="${index}" title="${deleteText}">X</button>
                 </div>
                 <div class="order-card-items">${itemsList}</div>
                 <div class="order-card-price">${order.total.toFixed(2)} LE</div>

@@ -56,6 +56,8 @@ const menuData = {
         { id: 38, name: 'Soft Drink', price: 30, icon: '\ud83e\udd64', nameAr: '\u0645\u0634\u0631\u0648\u0628 \u063a\u0627\u0632\u064a', quantity: 200 },
         { id: 39, name: 'Extra Sauce', price: 10, icon: '\ud83e\uded9', nameAr: '\u0635\u0648\u0635 \u0625\u0636\u0627\u0641\u064a', quantity: 200 },
         { id: 40, name: 'Truffle Mayo', price: 30, icon: '\ud83e\uded9', nameAr: '\u062a\u0631\u0627\u0641\u0644 \u0645\u0627\u064a\u0648', quantity: 200 },
+        { id: 43, name: 'Cherry Cola', price: 45, icon: '\ud83e\udd64', nameAr: '\u0643\u0648\u0644\u0627 \u0643\u0631\u0632', quantity: 200 },
+        { id: 44, name: 'Passion Fruit', price: 50, icon: '\ud83e\udd64', nameAr: '\u0628\u0627\u0634\u0646 \u0641\u0631\u0648\u062a', quantity: 200 },
     ]
 };
 
